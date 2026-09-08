@@ -6,28 +6,41 @@ Karşılaşılan gerçek sorunlar ve çözümleri. Yeni bir sorun çözdüğünd
 
 ## Form 500 hatası veriyor, `/api/health` "veritabanı kapalı" diyor
 
-**Belirti:** Servis ilk başladığında çalışıyor. Birkaç dakika hiçbir şey yapmadan
-bekleyince form gönderimi 500 hatası veriyor. Sunucu günlüğünde:
+**Belirti:** Servis ilk başladığında çalışıyor. Birkaç dakika sonra form gönderimi
+500 veriyor. Sunucu günlüğünde `connection timeout` veya `timeout expired`.
+Ama Postgres ayakta, `psql` sorunsuz çalışıyor.
 
+**Kök neden:** Servis **arka planda** çalışıyor. macOS, görünür penceresi olmayan
+arka plan süreçlerini düşük önceliğe düşürür. Kısıtlanan sürece o kadar az işlemci
+verilir ki basit bir sorgu bile zaman aşımına uğrar.
+
+Kontrol et:
+
+```bash
+ps -o pid,nice,stat,command -p $(pgrep -f 99-sunucu.js)
 ```
-[veritabani] gecici hata, yeniden deneniyor (1/2): Connection terminated due to connection timeout
-```
 
-Ama Postgres ayakta (`pg_isready` → accepting connections) ve `psql` sorunsuz çalışıyor.
+`STAT` sütununda **`SN`** ve `NICE` değeri **0'dan büyük** görüyorsan sorun budur.
+Sağlıklı hali: `STAT = S`, `NICE = 0`.
 
-**Kök neden:** macOS **App Nap**. İşletim sistemi, ön planda görünür penceresi olmayan
-süreçleri askıya alır. Askıdaki sürecin zamanlayıcıları çalışmadığı için veritabanı
-bağlantısı kurulamaz ve zaman aşımına düşer. Kodda hata yok — süreç uyutuluyor.
+**Çözüm:** Servisi **ön planda, gerçek bir Terminal penceresinde** çalıştır —
+`basla.command` dosyasına çift tıkla. Açılan Terminal penceresi ön planda olduğu
+sürece süreç normal öncelikte kalır. **O pencereyi kapatma.**
 
-**Çözüm:** `basla.command` servisi `caffeinate -i` ile başlatır. Elle başlatıyorsan:
+Elle çalıştırıyorsan da terminali açık bırak:
 
 ```bash
 cd server
-caffeinate -i npm start
+npm start        # bu terminali kapatma, arka plana atma
 ```
 
-**Nasıl doğrulanır:** servisi başlat, 90 saniye hiçbir şey yapmadan bekle, sonra
-`curl http://localhost:3001/api/health` → `"veritabani": "acik"` görmelisin.
+**İşe yaramayanlar** (denendi, kayıt için): `keepAlive`, kısa idle timeout,
+yeniden deneme, `caffeinate -dims -w PID`, `renice`, `taskpolicy`.
+İlk üçü sorunun kendisiyle ilgisiz; `caffeinate` sistem uykusunu engeller ama
+süreç önceliğini değiştirmez; son ikisi root izni ister.
+
+**Nasıl doğrulanır:** `basla.command` ile başlat, pencereyi açık bırak, 10 dakika
+bekle, sonra formu doldur. Kayıt düşmeli.
 
 ---
 

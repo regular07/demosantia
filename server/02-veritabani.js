@@ -1,66 +1,73 @@
 /* =============================================================
    02-veritabani.js
-   NE YAPAR : PostgreSQL baglanti havuzunu kurar ve sorgu calistirir.
+   NE YAPAR : PostgreSQL baglantisi kurar ve sorgu calistirir.
    BAGLI    : 01-ayarlar.js
    KURAL    : SQL'e kullanici verisi ASLA string birlestirme ile
               konmaz. Hep $1, $2 parametreleri kullanilir.
               Sebep: SQL injection. Bu kurala istisna yok.
 
    ---------------------------------------------------------------
-   NEDEN BU KADAR SAVUNMACI? (8 Eylul 2026'da yasanmis gercek hata)
+   NEDEN HAVUZ (POOL) KULLANMIYORUZ? — 8 Eylul 2026
    ---------------------------------------------------------------
-   BELIRTI : Servis basladiginda calisiyor, birkac dakika bosta
-             kalinca form 500 veriyor; /api/health "veritabani kapali"
-             diyor. Ama Postgres ayakta ve taze bir Node sureci ayni
-             ayarla 70 ms'de baglaniyor.
+   DURUST NOT: Havuzu, sandigimiz bir hatayi cozmek icin kaldirdik.
+   Sonra anlasildi ki hatanin sebebi havuz DEGILMIS. Yine de geri
+   koymadik; gerekcesi asagida.
 
-   KOK NEDEN: macOS App Nap. Isletim sistemi, on planda gorunur bir
-             penceresi olmayan sureci askiya aliyor. Askidaki surecin
-             zamanlayicilari calismadigi icin baglanti kurulamiyor ve
-             connectionTimeoutMillis doluyor. Sorun kodda degil,
-             surecin uyutulmasinda.
+   YASANAN BELIRTI:
+     Servis basladiginda calisiyor, birkac dakika sonra her istek
+     "connection timeout", sonra "timeout expired" ile 500 donuyor.
+     Postgres ayakta, psql sorunsuz, TAM O ANDA acilan taze bir Node
+     sureci 43-75 ms'de baglaniyor. Ama calisan servis baglanamiyor.
 
-   COZUM   : basla.command servisi "caffeinate -i" ile baslatir.
-             Dogrulandi: 90 sn bosta bekledikten sonra sorunsuz kayit.
+   GERCEK KOK NEDEN — olcerek bulundu:
+     Surecin durumu:  STAT = SN,  nice = 5
+     'N' = macOS sureci DUSUK ONCELIGE dusurmus. Gorunur penceresi
+     olmayan, terminale bagli olmayan arka plan surecleri isletim
+     sistemi tarafindan kisitlaniyor. Kisitlanan surece o kadar az
+     islemci veriliyor ki basit bir sorgu bile 10 saniyeyi asiyor.
+     Sorun veritabaninda, pg kutuphanesinde ya da havuzda DEGIL.
 
-   Asagidaki uc onlem ise gercek ag kesintilerine karsi (tethering
-   kopmasi, uyku sonrasi olu soketler) ikinci savunma hatti:
-     1) keepAlive   : soket bosta dursa da canli tutulur.
-     2) kisa idle   : bosta baglanti 10 sn sonra birakilir.
-     3) yeniden dene: gecici baglanti hatasinda 2 kez daha denenir.
+   DENENEN VE ISE YARAMAYANLAR:
+     keepAlive + kisa idle timeout   -> yetmedi
+     yeniden deneme                  -> yetmedi (surec hala kisitli)
+     caffeinate -dims -w PID         -> yetmedi (o sistem uykusunu
+                                        engeller, surec onceligini degil)
+     renice / taskpolicy             -> root izni gerekiyor
+
+   COZUM:
+     Servisi ON PLANDA, gercek bir Terminal penceresinde calistir.
+     basla.command tam bunu yapar: cift tiklayinca acilan Terminal
+     penceresi on planda oldugu icin surec normal oncelikte kalir.
+     Servisi arka plana atip pencereyi kapatirsan sorun geri gelir.
+
+   PEKI HAVUZ NEDEN GERI KONMADI?
+     Bu is yuku icin gerekli degil. Gunde birkac form alan bir site
+     icin istek basina 30-75 ms baglanti maliyeti onemsiz; buna
+     karsilik saklanan durum olmayinca curuyecek durum da olmuyor.
+     Havuz yuksek es zamanlilikta anlamlidir.
+
+     ILERIDE: servis 7/24 acik gercek bir sunucuya tasinip gunde
+     binlerce istek almaya baslarsa havuza donulmeli. O noktada
+     pg.Pool dogru secim olur.
    ============================================================= */
 
 'use strict';
 
-const { Pool } = require('pg');
+const { Client } = require('pg');
 const { AYAR } = require('./01-ayarlar');
 
-// Havuz: her istekte yeni baglanti acmak yerine hazir baglantilari
-// tekrar kullanir. Kucuk bir site icin 5 baglanti fazlasiyla yeter.
-const havuz = new Pool({
-  host:     AYAR.db.host,
-  port:     AYAR.db.port,
-  database: AYAR.db.database,
-  user:     AYAR.db.user,
-  password: AYAR.db.password,
-
-  max: 5,
-
-  // Onlem 1: TCP keepalive — isletim sistemi soketi olu sanmasin.
-  keepAlive: true,
-  keepAliveInitialDelayMillis: 10000,
-
-  // Onlem 2: bosta duran baglantiyi cabuk birak (30 sn degil, 10 sn).
-  idleTimeoutMillis: 10000,
-
-  connectionTimeoutMillis: 5000
-});
-
-// Bosta bir baglanti hata verirse pg onu havuzdan atar.
-// Burada sadece gunluge yaziyoruz ki sessiz kalmasin.
-havuz.on('error', (e) => {
-  console.error('[veritabani] bosta baglanti hatasi (havuzdan atildi):', e.message);
-});
+/** Her cagride yeni, temiz bir istemci uretir. */
+function yeniIstemci() {
+  return new Client({
+    host:     AYAR.db.host,
+    port:     AYAR.db.port,
+    database: AYAR.db.database,
+    user:     AYAR.db.user,
+    password: AYAR.db.password,
+    connectionTimeoutMillis: 5000,
+    query_timeout: 10000
+  });
+}
 
 /* -------------------------------------------------------------
    Gecici (yeniden denemeye deger) hatalar.
@@ -73,7 +80,9 @@ const GECICI_HATALAR = [
   'econnreset',
   'epipe',
   'etimedout',
-  'socket hang up'
+  'socket hang up',
+  'connection refused',
+  'econnrefused'
 ];
 
 function geciciMi(e) {
@@ -84,7 +93,8 @@ function geciciMi(e) {
 const bekle = (ms) => new Promise((c) => setTimeout(c, ms));
 
 /**
- * Parametreli sorgu calistirir. Gecici baglanti hatasinda 2 kez daha dener.
+ * Parametreli sorgu calistirir. Her cagri kendi baglantisini acar ve kapatir.
+ * Gecici baglanti hatasinda 2 kez daha dener.
  * @param {string} metin  'select * from t where id = $1'
  * @param {Array}  deger  [5]
  */
@@ -92,18 +102,25 @@ async function sorgu(metin, deger) {
   let sonHata;
 
   for (let deneme = 1; deneme <= 3; deneme++) {
+    const istemci = yeniIstemci();
     try {
-      return await havuz.query(metin, deger);
+      await istemci.connect();
+      const sonuc = await istemci.query(metin, deger);
+      return sonuc;
+
     } catch (e) {
       sonHata = e;
-
-      // Veri hatasiysa tekrar deneme, dogrudan yukari bildir
-      if (!geciciMi(e)) throw e;
+      if (!geciciMi(e)) throw e;   // veri hatasi -> tekrar deneme
 
       if (deneme < 3) {
         console.warn(`[veritabani] gecici hata, yeniden deneniyor (${deneme}/2): ${e.message}`);
         await bekle(deneme * 300);   // 300 ms, sonra 600 ms
       }
+
+    } finally {
+      // Baglantiyi HER DURUMDA kapat. Kapanmazsa Postgres tarafinda
+      // bosta baglanti birikir ve max_connections dolar.
+      try { await istemci.end(); } catch { /* zaten kapali */ }
     }
   }
 
@@ -121,4 +138,4 @@ async function baglantiTest() {
   }
 }
 
-module.exports = { sorgu, baglantiTest, havuz };
+module.exports = { sorgu, baglantiTest };
