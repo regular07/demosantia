@@ -33,7 +33,11 @@ window.Api = (function () {
   // Servisi bir sunucuya tasidiginda BURAYI doldur, gerisi kendiliginden calisir.
   var CANLI_API = '';   // ornek: 'https://api.demosantia.com'
 
-  var yerelMi = ['localhost', '127.0.0.1', ''].indexOf(location.hostname) !== -1;
+  // localhost VEYA ev agindaki bir IP (telefondan test ederken)
+  // 10.x.x.x / 192.168.x.x / 172.16-31.x.x = ozel ag araliklari
+  var ozelAg = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/;
+  var yerelMi = ['localhost', '127.0.0.1', ''].indexOf(location.hostname) !== -1
+             || ozelAg.test(location.hostname);
 
   var AYAR = {
     // Kademe 1 (su an): kendi bilgisayarindaki Node servisi -> yerel PostgreSQL
@@ -42,7 +46,9 @@ window.Api = (function () {
     //
     // REST sozlesmesi ayni kaldigi surece servisin hangi dille yazildigi
     // bu dosyayi ilgilendirmez. Sadece adres degisir.
-    taban: yerelMi ? 'http://localhost:3001' : CANLI_API,
+    // Siteyi hangi adresten actiysan API'yi de ayni adreste ara.
+    // Boylece telefondan 10.x.x.x:8000 acinca API 10.x.x.x:3001 olur.
+    taban: yerelMi ? location.protocol + '//' + location.hostname + ':3001' : CANLI_API,
 
     // Adres yoksa sunucuya hic gitme, sadece dogrula
     taslakModu: !(yerelMi || CANLI_API)

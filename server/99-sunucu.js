@@ -27,7 +27,7 @@ uygulama.use(express.json({ limit: '64kb' }));
    ------------------------------------------------------------- */
 uygulama.use((req, res, next) => {
   const kaynak = req.get('Origin');
-  if (kaynak === AYAR.izinliKaynak) {
+  if (kaynak && AYAR.izinliKaynaklar.includes(kaynak)) {
     res.set('Access-Control-Allow-Origin', kaynak);
     res.set('Vary', 'Origin');
   }
@@ -78,7 +78,7 @@ uygulama.use((hata, _req, res, _next) => {
   console.log(`  Adres        : http://localhost:${AYAR.port}`);
   console.log(`  Saglik       : http://localhost:${AYAR.port}/api/health`);
   console.log(`  Veritabani   : ${db.acik ? 'BAGLI (' + db.veritabani + ')' : 'BAGLANAMADI — ' + db.hata}`);
-  console.log(`  Izinli kaynak: ${AYAR.izinliKaynak}`);
+  console.log(`  Izinli kaynak: ${AYAR.izinliKaynaklar.join(', ')}`);
 
   if (!db.acik) {
     console.log('');

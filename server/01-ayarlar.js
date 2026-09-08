@@ -22,7 +22,13 @@ const AYAR = {
   },
 
   yonetimAnahtari: process.env.YONETIM_ANAHTARI || '',
-  izinliKaynak:    process.env.IZINLI_KAYNAK    || 'http://localhost:8000'
+
+  // Virgulle ayrilmis liste. Ornek:
+  //   IZINLI_KAYNAK=http://localhost:8000,http://10.29.169.227:8000
+  // Telefondan test ederken Mac'in yerel ag IP'sini de eklemek gerekir,
+  // cunku tarayici icin "localhost" ile "10.x.x.x" farkli kaynaklardir.
+  izinliKaynaklar: (process.env.IZINLI_KAYNAK || 'http://localhost:8000')
+                     .split(',').map(s => s.trim()).filter(Boolean)
 };
 
 /** Servis acilirken ayarlari denetler. Eksik varsa net sekilde soyler. */
