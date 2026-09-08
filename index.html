@@ -29,6 +29,7 @@
 <section class="hero">
   <div class="hero-fon" style="background-image:url(assets/img/hero.jpg)"></div>
   <div class="kap">
+   <div class="hero-izgara">
     <div class="hero-ic">
     <span class="etiket">Web Tasarım Stüdyosu</span>
     <h1 data-canlan>İşletmenizin internetteki yüzü, bir haftada hazır.</h1>
@@ -42,11 +43,15 @@
     </div>
 
     <div class="serit">
-      <div><span class="sayi">5 gün</span><span class="ne">ortalama teslim</span></div>
-      <div><span class="sayi">3.000₺</span><span class="ne">başlangıç fiyatı</span></div>
-      <div><span class="sayi">%100</span><span class="ne">mobil uyumlu</span></div>
+      <div><span class="sayi" data-sayac="5" data-son=" gün">5 gün</span><span class="ne">ortalama teslim</span></div>
+      <div><span class="sayi" data-sayac="3000" data-son="₺">3.000₺</span><span class="ne">başlangıç fiyatı</span></div>
+      <div><span class="sayi" data-sayac="100" data-on="%">%100</span><span class="ne">mobil uyumlu</span></div>
     </div>
     </div>
+
+    <!-- Imza an: site kendini insa ediyor. Tamamen dekoratif. -->
+    <div class="insa" data-insa></div>
+   </div>
   </div>
 </section>
 
@@ -89,6 +94,40 @@
   </div>
 </section>
 
+<section class="bolum bolum--gece">
+  <div class="kap">
+    <div class="bolum-basi">
+      <span class="etiket">Fark</span>
+      <h2 data-canlan>Kolu sürükleyin, farkı görün</h2>
+    </div>
+
+    <!-- Once/Sonra surgusu. Gercek kontrol gorunmez bir range girdisi:
+         klavyeyle ok tuslariyla da gezilebilir. -->
+    <div class="karsilastir" data-karsilastir>
+      <div class="karsilastir-kat karsilastir-alt">
+        <img src="assets/img/once.jpg" alt="Yenilenmeden önceki eski web sitesi" loading="lazy">
+      </div>
+      <div class="karsilastir-kat karsilastir-ust">
+        <img src="assets/img/sonra.jpg" alt="Demosantia tarafından yenilenmiş web sitesi" loading="lazy">
+      </div>
+
+      <span class="karsilastir-etiket karsilastir-etiket--once">ÖNCE</span>
+      <span class="karsilastir-etiket karsilastir-etiket--sonra">SONRA</span>
+
+      <div class="karsilastir-cizgi"></div>
+      <div class="karsilastir-tutamak">⟺</div>
+
+      <input type="range" class="karsilastir-kol" min="0" max="100" value="50" step="0.5"
+             aria-label="Önce ve sonra karşılaştırma kolu">
+    </div>
+
+    <p style="margin-top: var(--bo-3)" data-canlan="blok">
+      Aynı işletme, aynı içerik. Fark tasarımda ve hızda — müşteriniz siteye girdiği ilk
+      üç saniyede karar veriyor.
+    </p>
+  </div>
+</section>
+
 <section class="bolum">
   <div class="kap">
     <div class="bolum-basi">
@@ -113,6 +152,10 @@
 <script src="js/05-quote-form.js"></script>
 <script src="js/06-reveal.js"></script>
 <script src="js/07-karusel.js"></script>
+<script src="js/08-sayac.js"></script>
+<script src="js/09-etkiler.js"></script>
+<script src="js/10-karsilastir.js"></script>
+<script src="js/11-hero-insa.js"></script>
 <script src="js/99-main.js"></script>
 </body>
 </html>

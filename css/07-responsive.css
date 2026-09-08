@@ -57,3 +57,22 @@
 @media (max-width: 400px) {
   .kap { padding-inline: 14px; }
 }
+
+/* ---------- YENI BILESENLER: MOBIL ---------- */
+@media (max-width: 900px) {
+  /* Hero insa gorseli yaninda degil, yazinin altinda */
+  .hero-izgara { grid-template-columns: 1fr; gap: var(--bo-4); }
+  .insa { max-width: 100%; }
+}
+
+@media (max-width: 720px) {
+  /* Dar ekranda insa animasyonu yer kapliyor, gizle.
+     Yaziyi ve butonlari one cikarmak daha onemli. */
+  .insa { display: none; }
+
+  .karsilastir { aspect-ratio: 4 / 3; }
+  .karsilastir-tutamak { width: 40px; height: 40px; font-size: 15px; }
+  .karsilastir-etiket { top: 10px; font-size: 10px; padding: 4px 9px; }
+  .karsilastir-etiket--once { right: 10px; }
+  .karsilastir-etiket--sonra { left: 10px; }
+}

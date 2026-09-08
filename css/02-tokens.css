@@ -61,29 +61,50 @@
   --yazi-govde:  "Public Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
   --yazi-kod:    "JetBrains Mono", ui-monospace, Menlo, monospace;
 
-  /* --- Yazi boyutlari (olcek) --- */
-  --bs-xs:   0.75rem;   /* 12px */
-  --bs-s:    0.875rem;  /* 14px */
-  --bs-m:    1rem;      /* 16px */
-  --bs-l:    1.125rem;  /* 18px */
-  --bs-xl:   1.5rem;    /* 24px */
-  --bs-2xl:  2rem;      /* 32px */
-  --bs-3xl:  2.75rem;   /* 44px */
-  --bs-4xl:  3.75rem;   /* 60px — hero basligi, buyuk tip kendi basina dinamiktir */
+  /* -----------------------------------------------------------
+     TIPOGRAFI OLCEGI — az sayida, belirgin kademe
+     Yakin boyutlar (16 ve 17 gibi) hiyerarsi kurmaz, kararsiz
+     gorunur. Sicramalari buyuk tutuyoruz ki hiyerarsi net olsun.
+     ----------------------------------------------------------- */
+  --bs-xs:   0.75rem;   /* 12 — etiket, mono */
+  --bs-s:    0.875rem;  /* 14 — ikincil metin */
+  --bs-m:    1rem;      /* 16 — govde */
+  --bs-l:    1.25rem;   /* 20 — kart basligi */
+  --bs-xl:   1.75rem;   /* 28 — h3 */
+  --bs-2xl:  2.25rem;   /* 36 — h2 */
+  --bs-3xl:  3rem;      /* 48 — h1 */
+  --bs-4xl:  4rem;      /* 64 — hero */
 
-  /* --- Bosluklar --- */
-  --bo-1: 4px;
-  --bo-2: 8px;
-  --bo-3: 16px;
-  --bo-4: 24px;
-  --bo-5: 40px;
-  --bo-6: 64px;
-  --bo-7: 96px;
+  /* -----------------------------------------------------------
+     BOSLUK — 8 PIKSEL IZGARASI
+     Butun bosluklar 8'in kati. Gozun "hizali" dedigi sey budur.
+     Ara deger (13px, 22px gibi) YAZILMAZ; ritmi bozar.
+     ----------------------------------------------------------- */
+  --bo-1: 8px;
+  --bo-2: 16px;
+  --bo-3: 24px;
+  --bo-4: 32px;
+  --bo-5: 48px;
+  --bo-6: 72px;
+  --bo-7: 104px;
+
+  /* -----------------------------------------------------------
+     DERINLIK — 3 kademe, hepsi ayni isik yonunden
+     Her kutuya golge basmiyoruz. Golge "bu one cikti" demektir;
+     her yerde kullanilirsa hicbir sey one cikmaz.
+       1 = hafifce ayrik (kart durur halde)
+       2 = yukseldi (hover)
+       3 = ustte yuzuyor (menu, modal)
+     ----------------------------------------------------------- */
+  --derinlik-1: 0 1px 2px rgba(11, 16, 20, .06);
+  --derinlik-2: 0 12px 32px -16px rgba(11, 16, 20, .35);
+  --derinlik-3: 0 24px 60px -24px rgba(11, 16, 20, .5);
+  --derinlik-vurgu: 0 18px 44px -20px rgba(34, 224, 208, .45);
 
   /* --- Diger --- */
   --kose:        10px;    /* kose yuvarlakligi */
   --kose-kucuk:  6px;
-  --golge:       0 1px 2px rgba(15,23,32,.06), 0 10px 30px -14px rgba(15,23,32,.20);
+  --golge:       var(--derinlik-1);
   --genislik:    1120px;  /* icerik maksimum genisligi */
   --gecis:       .18s ease;
   --gecis-yumusak: .45s cubic-bezier(.22, 1, .36, 1);   /* kartlar, belirme */

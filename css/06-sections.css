@@ -145,3 +145,122 @@
 /* Sicak karsit rengi tek bir yerde kullaniyoruz: one cikan paket */
 .paket--one-cikan { border-color: var(--sicak); }
 .paket--one-cikan .rozet { background: var(--sicak-acik); color: var(--sicak-koyu); }
+
+/* =============================================================
+   SCROLL ILERLEME CIZGISI — 09-etkiler.js olusturur
+   ============================================================= */
+.ilerleme-cizgisi {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--marka), var(--marka-vurgu));
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 100;
+  pointer-events: none;
+}
+
+
+/* =============================================================
+   ONCE / SONRA SURGUSU — 10-karsilastir.js
+   ============================================================= */
+.karsilastir {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--gece-cizgi);
+  aspect-ratio: 16 / 10;
+  background: var(--gece-2);
+  user-select: none;
+  --kol-konum: 50%;
+}
+.karsilastir-kat { position: absolute; inset: 0; }
+.karsilastir-kat img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Ust katman soldan kirpiliyor; JS clip-path'i gunceller */
+.karsilastir-ust { clip-path: inset(0 50% 0 0); }
+
+/* Katmanlarin hangisi oldugunu soyleyen kucuk etiketler */
+.karsilastir-etiket {
+  position: absolute; top: 16px;
+  font-family: var(--yazi-kod); font-size: var(--bs-xs); font-weight: 700;
+  letter-spacing: .06em;
+  padding: 6px 12px; border-radius: 6px;
+  backdrop-filter: blur(6px);
+}
+.karsilastir-etiket--once  { right: 16px; background: rgba(11,16,20,.75); color: var(--gece-metin-2); }
+.karsilastir-etiket--sonra { left: 16px;  background: rgba(34,224,208,.9); color: var(--gece); }
+
+/* Ayirici cizgi ve tutamak */
+.karsilastir-cizgi {
+  position: absolute; top: 0; bottom: 0;
+  left: var(--kol-konum);
+  width: 2px; background: var(--marka-vurgu);
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+.karsilastir-tutamak {
+  position: absolute; top: 50%; left: var(--kol-konum);
+  transform: translate(-50%, -50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--marka-vurgu); color: var(--gece);
+  display: grid; place-items: center;
+  font-size: 18px; font-weight: 700;
+  box-shadow: var(--derinlik-vurgu);
+  pointer-events: none;
+}
+
+/* Gercek kontrol: gorunmez ama klavyeyle gezilebilir range girdisi */
+.karsilastir-kol {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  cursor: ew-resize;
+  margin: 0;
+}
+.karsilastir-kol:focus-visible ~ .karsilastir-tutamak {
+  outline: 3px solid var(--kagit);
+  outline-offset: 3px;
+}
+
+
+/* =============================================================
+   HERO INSA — 11-hero-insa.js
+   Tel kafes kutular sirayla yerine oturur.
+   ============================================================= */
+.insa {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-width: 460px;
+  border: 1px solid var(--gece-cizgi);
+  border-radius: 12px;
+  background: rgba(11, 16, 20, .55);
+  backdrop-filter: blur(2px);
+}
+.insa-parca {
+  position: absolute;
+  border: 1px solid var(--marka-vurgu);
+  border-radius: 4px;
+  background: rgba(34, 224, 208, .07);
+  opacity: 0;
+  transform: translateY(14px) scale(.96);
+  transition: opacity .55s cubic-bezier(.22,1,.36,1),
+              transform .55s cubic-bezier(.22,1,.36,1);
+}
+.insa-parca.yerinde { opacity: 1; transform: none; }
+
+/* Parca turune gore ton farki — duzen okunsun */
+.insa-parca--ust-cubuk { background: rgba(34,224,208,.16); }
+.insa-parca--baslik    { background: rgba(34,224,208,.22); border-color: var(--marka-vurgu); }
+.insa-parca--dugme     { background: var(--marka-vurgu); border-color: var(--marka-vurgu); }
+.insa-parca--metin     { background: rgba(159,178,189,.16); border-color: var(--gece-cizgi); }
+.insa-parca--kart      { background: rgba(34,224,208,.05); }
+
+/* Hero'yu iki sutuna bol: solda yazi, sagda insa */
+.hero-izgara {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--bo-5);
+  align-items: center;
+}

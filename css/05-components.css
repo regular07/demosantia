@@ -255,7 +255,7 @@
   overflow: hidden;
   cursor: grab;
 }
-.karusel-kart:hover { box-shadow: 0 24px 60px -24px rgba(34, 224, 208, .35); }
+.karusel-kart:hover { box-shadow: var(--derinlik-vurgu); }
 
 .karusel-kart .gorsel {
   aspect-ratio: 16 / 10;
@@ -298,10 +298,12 @@
 .kart {
   transition: transform var(--gecis-yumusak), box-shadow var(--gecis-yumusak), border-color var(--gecis-yumusak);
 }
+/* Durur halde golge YOK — sadece ince kenarlik.
+   Golge, "yukseldi" demek icin saklaniyor. */
 .kart:hover {
   transform: translateY(-4px);
   border-color: var(--marka);
-  box-shadow: 0 18px 40px -22px rgba(11, 16, 20, .45);
+  box-shadow: var(--derinlik-2);
 }
 
 .dugme { position: relative; overflow: hidden; }
