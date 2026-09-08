@@ -95,9 +95,27 @@ window.TeklifFormu = (function () {
         })
         .catch(function (e) {
           sonuc.className = 'form-sonuc form-sonuc--hata';
+
+          // Sunucu alan bazli hata dondurduyse (ornegin e-posta bicimi),
+          // ilgili alanin altina yaz. Sunucu dogrulamasi tarayicidakinden
+          // daha kapsamli olabilir, o yuzden onu da gosteriyoruz.
+          if (e.hatalar) {
+            Object.keys(e.hatalar).forEach(function (ad) {
+              hataYaz(ad, e.hatalar[ad]);
+            });
+            sonuc.textContent = 'Lutfen isaretli alanlari duzeltin.';
+            return;
+          }
+
+          // Hiz siniri: kullaniciya ne yapacagini soyle
+          if (e.durum === 429) {
+            sonuc.textContent = e.message;
+            return;
+          }
+
           sonuc.textContent = 'Gonderilemedi. Lutfen tekrar deneyin veya bize dogrudan yazin.';
           Hata.goster('Teklif gonderilemedi: ' + e.message, '05-quote-form.js',
-                      'js/04-api.js icindeki AYAR.taban adresi dogru mu?');
+                      'server/ klasorunde "npm start" calisiyor mu? js/04-api.js adresi dogru mu?');
         })
         .finally(function () {
           dugme.disabled = false;

@@ -59,3 +59,4 @@ Uzun hali: `02-dosya-rehberi.md`
 | `05-veritabani.md` | Tablolar ve sorgular |
 | `06-yayinlama.md` | Canlıya nasıl alınır? |
 | `07-test-listesi.md` | Elle test protokolü |
+| `08-sorun-giderme.md` | **Bir şey bozulduğunda buraya bak** |

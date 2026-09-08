@@ -33,3 +33,4 @@ Derleme adımı yok, framework yok, paket yöneticisi yok. Dosyayı aç, düzenl
 - `docs/00-BASLA-BURADAN.md` — buradan başla
 - `docs/02-dosya-rehberi.md` — "şunu değiştireceğim, hangi dosya?"
 - `docs/07-test-listesi.md` — değişiklikten sonra ne kontrol edilir
+- `docs/08-sorun-giderme.md` — bir şey bozulduğunda
