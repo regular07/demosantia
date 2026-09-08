@@ -23,10 +23,11 @@
 <header class="ust" id="ust"></header>
 
 <section class="hero">
+  <div class="hero-fon" style="background-image:url(assets/img/hero.jpg)"></div>
   <div class="kap">
     <div class="hero-ic">
     <span class="etiket">Hizmetler</span>
-    <h1>Paketler ve fiyatlar</h1>
+    <h1 data-canlan>Paketler ve fiyatlar</h1>
     <p>Üç paket, net kapsam, gizli kalem yok. İşletmenizin büyüklüğüne göre seçin.</p>
     </div>
   </div>
@@ -34,7 +35,7 @@
 
 <section class="bolum">
   <div class="kap">
-    <div class="izgara izgara--2" data-belir>
+    <div class="izgara izgara--2" data-canlan="sirali">
 
       <article class="kart paket">
         <span class="rozet">BASIC</span>
@@ -92,9 +93,9 @@
   <div class="kap">
     <div class="bolum-basi">
       <span class="etiket">Devam eden destek</span>
-      <h2>Site yayına girdikten sonra</h2>
+      <h2 data-canlan>Site yayına girdikten sonra</h2>
     </div>
-    <div class="izgara" data-belir>
+    <div class="izgara" data-canlan="sirali">
       <article class="kart">
         <h3>Bakım paketi</h3>
         <div class="fiyat" style="font-size:1.5rem">1.000₺ <small>/ ay</small></div>
@@ -115,6 +116,7 @@
 <script src="js/04-api.js"></script>
 <script src="js/05-quote-form.js"></script>
 <script src="js/06-reveal.js"></script>
+<script src="js/07-karusel.js"></script>
 <script src="js/99-main.js"></script>
 </body>
 </html>

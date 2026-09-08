@@ -177,3 +177,138 @@
   font-size: var(--bs-xs);
   color: #8b9aa8;
 }
+
+/* =============================================================
+   CANLANMA — scroll ile sonukten canliya
+   06-reveal.js bu siniflari ekler/kaldirir.
+   Baslangic opakligi 0 DEGIL 0.25: JS calismasa bile yazi okunur.
+   ============================================================= */
+
+.canlanacak { opacity: .25; transition: opacity var(--gecis-yavas), transform var(--gecis-yavas); }
+.canlanacak.canli { opacity: 1; }
+
+/* Kelime kelime canlanan basliklar */
+.canlanacak .kelime {
+  display: inline-block;
+  opacity: .2;
+  transform: translateY(.35em);
+  transition: opacity var(--gecis-yumusak), transform var(--gecis-yumusak);
+}
+.canlanacak.canli .kelime { opacity: 1; transform: none; }
+/* Kap tam opak olsun, canlanmayi kelimeler tasisin */
+.canlanacak[data-canlan="kelime"] { opacity: 1; }
+
+/* Blok halinde canlanan ogeler */
+.canlanacak[data-canlan="blok"]   { transform: translateY(14px); }
+.canlanacak[data-canlan="blok"].canli { transform: none; }
+
+/* Cocuklari sirayla canlanan kaplar */
+.canlanacak[data-canlan="sirali"] { opacity: 1; }
+.canlanacak[data-canlan="sirali"] > * {
+  opacity: .25;
+  transform: translateY(18px);
+  transition: opacity var(--gecis-yumusak), transform var(--gecis-yumusak);
+}
+.canlanacak[data-canlan="sirali"].canli > * { opacity: 1; transform: none; }
+
+
+/* =============================================================
+   KARUSEL — yatay kayan 3B kartlar
+   Kaydirma tarayicinin oz scroll'u; 07-karusel.js sadece 3B egimi
+   ve oklari ekler. JS olmasa da kaydirilir.
+   ============================================================= */
+
+.karusel { position: relative; }
+
+.karusel-ray {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding: 40px 0 48px;
+  /* Kartlarin 3B donusunun kirpilmamasi icin nefes payi */
+  perspective: 1100px;
+  scrollbar-width: none;                    /* Firefox */
+  -webkit-overflow-scrolling: touch;
+}
+.karusel-ray::-webkit-scrollbar { display: none; }   /* Safari/Chrome */
+.karusel-ray.surukleniyor { cursor: grabbing; scroll-snap-type: none; }
+
+.karusel-kart {
+  flex: 0 0 clamp(260px, 78vw, 380px);
+  scroll-snap-align: center;
+  transform-style: preserve-3d;
+  transition: transform var(--gecis-yumusak), opacity var(--gecis-yumusak), box-shadow var(--gecis-yumusak);
+  will-change: transform;
+  background: var(--gece-2);
+  border: 1px solid var(--gece-cizgi);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: grab;
+}
+.karusel-kart:hover { box-shadow: 0 24px 60px -24px rgba(34, 224, 208, .35); }
+
+.karusel-kart .gorsel {
+  aspect-ratio: 16 / 10;
+  background: var(--gece-3);
+  display: grid; place-items: center;
+  color: var(--gece-soluk);
+  font-family: var(--yazi-kod); font-size: var(--bs-xs);
+  overflow: hidden;
+}
+.karusel-kart .gorsel img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--gecis-yavas);
+}
+.karusel-kart:hover .gorsel img { transform: scale(1.06); }
+
+.karusel-kart .icerik { padding: var(--bo-3) var(--bo-4) var(--bo-4); display: flex; flex-direction: column; gap: 7px; }
+.karusel-kart h3 { color: var(--gece-metin); font-size: var(--bs-l); }
+.karusel-kart p  { color: var(--gece-metin-2); font-size: var(--bs-s); }
+
+/* Oklar */
+.karusel-oklar { display: flex; gap: 10px; justify-content: flex-end; }
+.karusel-ok {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--gece-cizgi);
+  background: var(--gece-2);
+  color: var(--gece-metin);
+  display: grid; place-items: center;
+  font-size: 18px;
+  transition: background var(--gecis), border-color var(--gecis), opacity var(--gecis);
+}
+.karusel-ok:hover:not([disabled]) { background: var(--marka-vurgu); color: var(--gece); border-color: var(--marka-vurgu); }
+.karusel-ok[disabled] { opacity: .3; cursor: not-allowed; }
+
+
+/* =============================================================
+   HOVER — kartlar, butonlar, linkler
+   ============================================================= */
+
+.kart {
+  transition: transform var(--gecis-yumusak), box-shadow var(--gecis-yumusak), border-color var(--gecis-yumusak);
+}
+.kart:hover {
+  transform: translateY(-4px);
+  border-color: var(--marka);
+  box-shadow: 0 18px 40px -22px rgba(11, 16, 20, .45);
+}
+
+.dugme { position: relative; overflow: hidden; }
+.dugme--birincil:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px var(--marka); }
+.dugme { transition: background var(--gecis), color var(--gecis), border-color var(--gecis), transform var(--gecis), box-shadow var(--gecis); }
+
+/* Menu linkleri: alt cizgi soldan saga cizilir */
+.menu a:not(.dugme) { position: relative; }
+.menu a:not(.dugme)::after {
+  content: '';
+  position: absolute; left: 0; bottom: -4px;
+  width: 100%; height: 2px;
+  background: var(--marka);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--gecis-yumusak);
+}
+.menu a:not(.dugme):hover::after,
+.menu a.aktif:not(.dugme)::after { transform: scaleX(1); }

@@ -91,3 +91,57 @@
 .sss summary::after { content: "+"; color: var(--marka); font-family: var(--yazi-kod); flex: none; }
 .sss details[open] summary::after { content: "−"; }
 .sss p { margin-top: var(--bo-2); font-size: var(--bs-s); }
+
+/* =============================================================
+   KOYU BOLUMLER — acik/koyu ritmi
+   Site tek duze beyaz degil; belirli bolumler koyu zeminde,
+   elektrik camgobegi orada patliyor.
+   ============================================================= */
+
+.bolum--gece {
+  background: var(--gece);
+  color: var(--gece-metin);
+}
+.bolum--gece h1,
+.bolum--gece h2,
+.bolum--gece h3 { color: var(--gece-metin); }
+.bolum--gece p  { color: var(--gece-metin-2); }
+.bolum--gece .etiket { color: var(--marka-vurgu); }
+.bolum--gece .bolum-basi .etiket { color: var(--marka-vurgu); }
+
+/* Koyu bolumdeki ikincil buton */
+.bolum--gece .dugme--ikincil { color: var(--marka-vurgu); border-color: var(--gece-cizgi); }
+.bolum--gece .dugme--ikincil:hover { background: var(--gece-2); border-color: var(--marka-vurgu); }
+
+/* ---------- HERO: koyu, gorselli ---------- */
+.hero {
+  position: relative;
+  background: var(--gece);
+  color: var(--gece-metin);
+  border-bottom: none;
+  padding-block: var(--bo-7) var(--bo-6);
+  overflow: hidden;
+}
+.hero-fon {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: .55;
+}
+/* Yazinin okunmasi icin karartma katmani — solda daha koyu */
+.hero-fon::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--gece) 12%, rgba(11,16,20,.72) 55%, rgba(11,16,20,.35) 100%);
+}
+.hero .kap { position: relative; z-index: 1; }
+.hero h1 { color: var(--gece-metin); font-size: clamp(2rem, 6vw, var(--bs-4xl)); }
+.hero p  { color: var(--gece-metin-2); }
+.hero .etiket { color: var(--marka-vurgu); }
+
+.hero .serit { border-top-color: var(--gece-cizgi); }
+.hero .serit .sayi { color: var(--gece-metin); }
+.hero .serit .ne   { color: var(--gece-soluk); }
+
+/* Sicak karsit rengi tek bir yerde kullaniyoruz: one cikan paket */
+.paket--one-cikan { border-color: var(--sicak); }
+.paket--one-cikan .rozet { background: var(--sicak-acik); color: var(--sicak-koyu); }

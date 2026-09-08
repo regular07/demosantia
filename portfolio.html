@@ -23,49 +23,72 @@
 <header class="ust" id="ust"></header>
 
 <section class="hero">
+  <div class="hero-fon" style="background-image:url(assets/img/hero.jpg)"></div>
   <div class="kap">
     <div class="hero-ic">
     <span class="etiket">Portfolyo</span>
-    <h1>Örnek çalışmalar</h1>
+    <h1 data-canlan>Örnek çalışmalar</h1>
     <p>Canlı demoları gezebilir, telefonunuzdan da açıp deneyebilirsiniz.</p>
     </div>
   </div>
 </section>
 
-<section class="bolum">
+<section class="bolum bolum--gece">
   <div class="kap">
-    <div class="izgara izgara--2" data-belir>
+    <div class="bolum-basi">
+      <span class="etiket">Çalışmalar</span>
+      <h2 data-canlan>Kaydırarak gezin</h2>
+    </div>
 
-      <article class="kart is-karti">
-        <div class="gorsel">görsel eklenecek</div>
-        <div class="icerik">
-          <span class="rozet">STANDART PAKET</span>
-          <h3>Kafe / Restoran şablonu</h3>
-          <p>Filtrelenebilir menü, galeri slider'ı, yorumlar, SSS ve WhatsApp entegrasyonu.</p>
-          <a href="https://regular07.github.io/standart-paket/" target="_blank" rel="noopener">Canlı demoyu aç →</a>
-        </div>
-      </article>
+    <!-- 3B kart serisi. Kaydirma tarayicinin oz scroll'u; 07-karusel.js
+         sadece derinlik egimini ve oklari ekler. -->
+    <div class="karusel" data-karusel>
+      <div class="karusel-ray">
 
-      <article class="kart is-karti">
-        <div class="gorsel">yakında</div>
-        <div class="icerik">
-          <span class="rozet">BASIC PAKET</span>
-          <h3>Kuaför / Güzellik salonu</h3>
-          <p>Hizmet listesi, fiyat tablosu, randevu için doğrudan arama butonu.</p>
-          <span style="font-size:.875rem;color:var(--soluk)">Demo hazırlanıyor</span>
-        </div>
-      </article>
+        <article class="karusel-kart">
+          <div class="gorsel"><img src="assets/img/kafe.jpg" alt="Kafe ve restoran web sitesi çalışması" loading="lazy"></div>
+          <div class="icerik">
+            <span class="rozet">STANDART PAKET</span>
+            <h3>Kafe / Restoran</h3>
+            <p>Filtrelenebilir menü, galeri slider'ı, müşteri yorumları ve WhatsApp entegrasyonu.</p>
+            <a href="https://regular07.github.io/standart-paket/" target="_blank" rel="noopener">Canlı demoyu aç →</a>
+          </div>
+        </article>
 
-      <article class="kart is-karti">
-        <div class="gorsel">yakında</div>
-        <div class="icerik">
-          <span class="rozet">BASIC PAKET</span>
-          <h3>Klinik / Sağlık</h3>
-          <p>Doktor tanıtımı, hizmetler, konum ve randevu talebi formu.</p>
-          <span style="font-size:.875rem;color:var(--soluk)">Demo hazırlanıyor</span>
-        </div>
-      </article>
+        <article class="karusel-kart">
+          <div class="gorsel"><img src="assets/img/kuafor.jpg" alt="Kuaför ve güzellik salonu web sitesi çalışması" loading="lazy"></div>
+          <div class="icerik">
+            <span class="rozet">BASIC PAKET</span>
+            <h3>Kuaför / Güzellik</h3>
+            <p>Hizmet listesi, fiyat tablosu, randevu için tek dokunuşla arama.</p>
+          </div>
+        </article>
 
+        <article class="karusel-kart">
+          <div class="gorsel"><img src="assets/img/klinik.jpg" alt="Klinik web sitesi çalışması" loading="lazy"></div>
+          <div class="icerik">
+            <span class="rozet">PREMIUM PAKET</span>
+            <h3>Klinik / Sağlık</h3>
+            <p>Doktor tanıtımları, hizmetler, konum ve randevu talebi formu.</p>
+          </div>
+        </article>
+
+        <article class="karusel-kart">
+          <div class="gorsel">sıradaki işiniz olabilir</div>
+          <div class="icerik">
+            <span class="rozet">SİZİN İŞİNİZ</span>
+            <h3>Buraya sizin siteniz</h3>
+            <p>İşletmenizi anlatın, bir hafta içinde bu listede yerinizi alın.</p>
+            <a href="contact.html">Teklif alın →</a>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="karusel-oklar">
+        <button class="karusel-ok karusel-ok--geri" aria-label="Önceki çalışma">‹</button>
+        <button class="karusel-ok karusel-ok--ileri" aria-label="Sonraki çalışma">›</button>
+      </div>
     </div>
   </div>
 </section>
@@ -76,6 +99,7 @@
 <script src="js/04-api.js"></script>
 <script src="js/05-quote-form.js"></script>
 <script src="js/06-reveal.js"></script>
+<script src="js/07-karusel.js"></script>
 <script src="js/99-main.js"></script>
 </body>
 </html>
