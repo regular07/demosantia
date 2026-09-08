@@ -98,3 +98,26 @@ curl http://localhost:3001/api/health
 ```
 
 Beklenen: `{"servis":"acik","veritabani":"acik","detay":"demosantia",...}`
+
+---
+
+## CSS'i değiştirdim ama tarayıcıda değişmedi
+
+**Belirti:** CSS dosyasını düzenledin, sayfayı yeniledin, hiçbir şey değişmedi.
+"Düzeltmem işe yaramadı" diye düşünüp yanlış yere bakmaya başlıyorsun.
+
+**Sebep:** Tarayıcı CSS dosyasını önbellekten veriyor. HTML'i yenilemek yetmiyor;
+`<link>` ile çekilen dosya eski kalıyor.
+
+**Çözüm:**
+- macOS'ta **Cmd + Shift + R** (sert yenileme)
+- Ya da geliştirici araçlarında Network → "Disable cache" işaretle
+- Ya da sunucudan gerçekten ne geldiğini gör:
+
+```bash
+curl -s http://localhost:8000/css/02-tokens.css | grep "aradığın-kural"
+```
+
+**Bu tuzağa 8 Eylül 2026'da üç kez düşüldü.** Diskteki dosya doğruydu, tarayıcı eskisini
+gösteriyordu. Bir düzeltme "işe yaramadı" gibi görünüyorsa **önce sunucudan geleni kontrol et**,
+koda dönüp durma.

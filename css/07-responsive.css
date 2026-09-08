@@ -60,9 +60,20 @@
 
 /* ---------- YENI BILESENLER: MOBIL ---------- */
 @media (max-width: 900px) {
-  /* Hero insa gorseli yaninda degil, yazinin altinda */
+  /* Hero insa gorseli yanda degil, yazinin altinda. */
   .hero-izgara { grid-template-columns: 1fr; gap: var(--bo-4); }
-  .insa { max-width: 100%; }
+
+  /* DIKKAT: burada 'max-width: 100%' YAZMA.
+     Tek sutuna dusunce kutu tum genislige yayiliyor ve 4:3 orani
+     yuzunden devasa oluyor (olculdu: 820px ekranda 756x567 px,
+     hero toplam 1252 px). Ic parcalar yuzdeyle konumlandigi icin
+     buyudukce seyreliyor ve BOS gorunuyor.
+     Cozum: sinirli genislik + ortalama + daha yayvan oran. */
+  .insa {
+    max-width: 420px;
+    margin-inline: auto;
+    aspect-ratio: 16 / 10;
+  }
 }
 
 @media (max-width: 720px) {
