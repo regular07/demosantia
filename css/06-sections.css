@@ -258,9 +258,13 @@
 .insa-parca--kart      { background: rgba(34,224,208,.05); }
 
 /* Hero'yu iki sutuna bol: solda yazi, sagda insa */
+/* Ikinci sutun 'auto' OLAMAZ: insa kutusunun icindeki parcalar mutlak
+   konumlu, yani tarayici 'icerik yok' deyip sutunu sifira cokertiyor.
+   (8 Eylul 2026: sutun 2.6px olmustu, kutu gorunmuyordu.)
+   Bu yuzden acik bir ust sinir veriyoruz. */
 .hero-izgara {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr minmax(0, 460px);
   gap: var(--bo-5);
   align-items: center;
 }
