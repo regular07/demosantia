@@ -153,8 +153,16 @@
 .menu a:not(.dugme):hover { color: var(--marka); }
 .menu a.aktif:not(.dugme) { color: var(--marka); font-weight: 700; }
 
-.menu-dugme { display: none; padding: 8px; border-radius: var(--kose-kucuk); }
-.menu-dugme span { display: block; width: 20px; height: 2px; background: var(--murekkep); margin: 4px 0; }
+/* 44x44: dokunmatik ekranda parmak icin onerilen asgari hedef boyutu */
+.menu-dugme {
+  display: none;
+  width: 44px; height: 44px;
+  padding: 0;
+  border-radius: var(--kose-kucuk);
+  align-items: center; justify-content: center;
+  flex-direction: column;
+}
+.menu-dugme span { display: block; width: 20px; height: 2px; background: var(--murekkep); margin: 2.5px 0; }
 
 /* ---------- FOOTER ---------- */
 .alt { background: var(--murekkep); color: #cbd6e0; padding-block: var(--bo-6) var(--bo-4); }

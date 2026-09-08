@@ -46,7 +46,7 @@
   .menu a:last-child { border-bottom: none; }
   .menu .dugme { margin-top: var(--bo-2); }
 
-  .menu-dugme { display: block; }
+  .menu-dugme { display: flex; }
   .ust { position: relative; }
 
   .serit { gap: var(--bo-4); }

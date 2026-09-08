@@ -111,7 +111,25 @@ window.Karusel = (function () {
     });
   }
 
+  /* Gorsel yuklenemezse (henuz uretilmediyse ya da yol yanlissa)
+     kirik resim ikonu gosterme; alt metnini yaz. */
+  function gorselYedegi() {
+    U.$$('.karusel-kart img').forEach(function (im) {
+      function yedek() {
+        var kap = im.parentElement;
+        if (!kap) return;
+        kap.textContent = im.getAttribute('alt') || 'görsel hazırlanıyor';
+        Hata.goster('Gorsel yuklenemedi: ' + im.getAttribute('src'),
+                    '07-karusel.js',
+                    'assets/img/ altinda bu dosya var mi?');
+      }
+      if (im.complete && im.naturalWidth === 0) { yedek(); return; }
+      im.addEventListener('error', yedek);
+    });
+  }
+
   function baslat() {
+    gorselYedegi();
     U.$$('[data-karusel]').forEach(kur);
   }
 
