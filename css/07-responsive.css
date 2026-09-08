@@ -1,0 +1,59 @@
+/* =============================================================
+   07-responsive.css
+   NE YAPAR : Mobil ve tablet kirilimlari. TUM medya sorgulari burada.
+   BAGLI    : Diger tum CSS dosyalari.
+   KURAL    : EN SON yuklenir — bu yuzden cakismada bu dosya kazanir.
+              Baska hicbir CSS dosyasina @media yazma, hepsi buraya.
+   ============================================================= */
+
+/* ---------- TABLET ---------- */
+@media (max-width: 900px) {
+  :root {
+    --bs-3xl: 2.25rem;
+    --bs-2xl: 1.7rem;
+    --bo-7: 64px;
+    --bo-6: 48px;
+  }
+}
+
+/* ---------- MOBIL ---------- */
+@media (max-width: 720px) {
+  :root {
+    --bs-3xl: 1.9rem;
+    --bs-2xl: 1.45rem;
+    --bo-7: 48px;
+    --bo-6: 40px;
+  }
+
+  .kap { padding-inline: var(--bo-3); }
+
+  /* Menu: normalde gizli, hamburger ile acilir */
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--kagit);
+    border-bottom: 1px solid var(--cizgi);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--bo-2) var(--bo-3) var(--bo-3);
+    display: none;
+  }
+  .menu.acik { display: flex; }
+  .menu a { padding-block: 11px; border-bottom: 1px solid var(--cizgi); }
+  .menu a:last-child { border-bottom: none; }
+  .menu .dugme { margin-top: var(--bo-2); }
+
+  .menu-dugme { display: block; }
+  .ust { position: relative; }
+
+  .serit { gap: var(--bo-4); }
+  .hero-dugmeler .dugme { flex: 1 1 100%; }
+}
+
+/* ---------- KUCUK TELEFON ---------- */
+@media (max-width: 400px) {
+  .kap { padding-inline: 14px; }
+}

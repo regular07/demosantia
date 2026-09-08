@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demosantia — İşletmeniz için web sitesi</title>
+<meta name="description" content="Küçük ve orta ölçekli işletmeler için hızlı, mobil uyumlu web siteleri. 5 günde yayında.">
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+
+<!-- CSS SIRASI ONEMLI: numaralar yukleme sirasini verir, son yuklenen kazanir -->
+<link rel="stylesheet" href="css/01-reset.css">
+<link rel="stylesheet" href="css/02-tokens.css">
+<link rel="stylesheet" href="css/03-base.css">
+<link rel="stylesheet" href="css/04-layout.css">
+<link rel="stylesheet" href="css/05-components.css">
+<link rel="stylesheet" href="css/06-sections.css">
+<link rel="stylesheet" href="css/07-responsive.css">
+
+<!-- Hata yakalayici EN ONCE yuklenir ki diger dosyalarin hatasini da gorsun -->
+<script src="js/00-hata.js"></script>
+</head>
+<body>
+
+<header class="ust" id="ust"></header>
+
+<section class="hero">
+  <div class="kap">
+    <div class="hero-ic">
+    <span class="etiket">Web Tasarım Stüdyosu</span>
+    <h1>İşletmenizin internetteki yüzü, bir haftada hazır.</h1>
+    <p>
+      Kafe, restoran, kuaför, klinik ve yerel işletmeler için mobil uyumlu,
+      hızlı açılan, Google'da bulunan web siteleri. Şablon değil — işinize göre kurulur.
+    </p>
+    <div class="hero-dugmeler">
+      <a href="contact.html" class="dugme dugme--birincil">Ücretsiz teklif al</a>
+      <a href="portfolio.html" class="dugme dugme--ikincil">Örnek çalışmalar</a>
+    </div>
+
+    <div class="serit">
+      <div><span class="sayi">5 gün</span><span class="ne">ortalama teslim</span></div>
+      <div><span class="sayi">3.000₺</span><span class="ne">başlangıç fiyatı</span></div>
+      <div><span class="sayi">%100</span><span class="ne">mobil uyumlu</span></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="bolum">
+  <div class="kap">
+    <div class="bolum-basi">
+      <span class="etiket">Ne yapıyoruz</span>
+      <h2>Karmaşık değil, çalışan siteler</h2>
+    </div>
+    <div class="izgara" data-belir>
+      <article class="kart">
+        <h3>Tek sayfa tanıtım</h3>
+        <p>İşletmenizi anlatan, telefon ve yol tarifi butonlu, tek sayfalık hızlı site.</p>
+      </article>
+      <article class="kart">
+        <h3>Menü ve galeri</h3>
+        <p>Filtrelenebilir menü, fotoğraf galerisi, müşteri yorumları ve sık sorulanlar.</p>
+      </article>
+      <article class="kart">
+        <h3>Teklif ve iletişim</h3>
+        <p>WhatsApp, arama ve form ile doğrudan size ulaşan müşteri talepleri.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bolum bolum--yuzey">
+  <div class="kap">
+    <div class="bolum-basi">
+      <span class="etiket">Süreç</span>
+      <h2>Nasıl ilerliyoruz</h2>
+    </div>
+    <!-- Numaralar gercek bir sirayi anlatiyor: adimlar birbirini takip ediyor -->
+    <div class="adimlar" data-belir>
+      <div class="adim"><div><h3>Konuşuyoruz</h3><p>İşinizi, müşterinizi ve sitede ne olması gerektiğini dinliyoruz. 20 dakika.</p></div></div>
+      <div class="adim"><div><h3>Taslağı görüyorsunuz</h3><p>Onay vermeden önce sitenin gerçek halini canlı bağlantıdan geziyorsunuz.</p></div></div>
+      <div class="adim"><div><h3>Düzeltiyoruz</h3><p>Metin, renk, fotoğraf — istediğiniz değişiklikleri yapıyoruz.</p></div></div>
+      <div class="adim"><div><h3>Yayına alıyoruz</h3><p>Alan adı bağlanır, site yayına girer, Google'a bildirilir.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="bolum">
+  <div class="kap">
+    <div class="bolum-basi">
+      <span class="etiket">Sık sorulanlar</span>
+      <h2>Merak edilenler</h2>
+    </div>
+    <div class="sss" data-belir>
+      <details open><summary>Ne kadar sürede hazır olur?</summary><p>Tek sayfalık site için ortalama 5 iş günü. İçerik ve fotoğraflar hazırsa daha kısa.</p></details>
+      <details><summary>Sonradan değişiklik yapabilir miyim?</summary><p>Evet. Küçük değişiklikler destek paketine dahil; büyük eklemeler ayrıca fiyatlanır.</p></details>
+      <details><summary>Alan adı ve barındırma dahil mi?</summary><p>Site yayına alınır; alan adı ücreti size ait ve doğrudan kendi adınıza kaydedilir.</p></details>
+      <details><summary>Peşin mi ödüyorum?</summary><p>Hayır. Başlangıçta kapora, siteyi onayladıktan sonra kalanı.</p></details>
+    </div>
+  </div>
+</section>
+<footer class="alt" id="alt"></footer>
+
+<!-- JS SIRASI ONEMLI: 99-main.js hepsini en sonda baslatir -->
+<script src="js/01-utils.js"></script>
+<script src="js/02-partials.js"></script>
+<script src="js/03-nav.js"></script>
+<script src="js/04-api.js"></script>
+<script src="js/05-quote-form.js"></script>
+<script src="js/06-reveal.js"></script>
+<script src="js/99-main.js"></script>
+</body>
+</html>

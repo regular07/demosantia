@@ -1,0 +1,45 @@
+/* =============================================================
+   03-base.css
+   NE YAPAR : Etiketlerin (body, h1, p, a...) temel gorunumu.
+   BAGLI    : 02-tokens.css
+   KURAL    : Burada SINIF (.sinif) tanimlanmaz, sadece etiket.
+   ============================================================= */
+
+body {
+  font-family: var(--yazi-govde);
+  font-size: var(--bs-m);
+  line-height: 1.65;
+  color: var(--murekkep);
+  background: var(--kagit);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--yazi-baslik);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.012em;
+  text-wrap: balance;
+  color: var(--murekkep);
+}
+
+h1 { font-size: var(--bs-3xl); }
+h2 { font-size: var(--bs-2xl); }
+h3 { font-size: var(--bs-xl); }
+
+p { max-width: 68ch; color: var(--murekkep-2); }
+
+a {
+  color: var(--marka);
+  transition: color var(--gecis);
+}
+a:hover { color: var(--marka-koyu); }
+
+strong { font-weight: 600; color: var(--murekkep); }
+
+/* Klavye ile gezenler icin gorunur odak halkasi — SILME, erisilebilirlik */
+:focus-visible {
+  outline: 2px solid var(--marka);
+  outline-offset: 2px;
+  border-radius: var(--kose-kucuk);
+}

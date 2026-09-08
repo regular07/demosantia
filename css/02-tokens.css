@@ -1,0 +1,64 @@
+/* =============================================================
+   02-tokens.css
+   NE YAPAR : Sitenin butun renk, yazi tipi ve olcu degerleri.
+              TEK KAYNAK burasi.
+   BAGLI    : Hicbir seye.
+   NASIL    : Rengi degistirmek istiyorsan SADECE bu dosyaya bak.
+              Baska hicbir CSS dosyasinda duz renk kodu (#abc123)
+              yazmiyoruz; hepsi buradaki degiskenleri kullaniyor.
+   ============================================================= */
+
+:root {
+  /* --- Marka renkleri --- */
+  --marka:          #0d7d84;   /* Demosantia teal */
+  --marka-koyu:     #075055;
+  --marka-acik:     #d9f0f1;
+  --marka-vurgu:    #12b3bd;
+
+  /* --- Notr renkler --- */
+  --murekkep:       #0f1720;   /* ana metin */
+  --murekkep-2:     #3b4a59;   /* ikincil metin */
+  --soluk:          #6b7c8d;   /* aciklama, etiket */
+  --kagit:          #ffffff;   /* sayfa zemini */
+  --yuzey:          #f4f7f9;   /* kart, bolum zemini */
+  --yuzey-2:        #e8eef2;
+  --cizgi:          #dbe4ea;   /* kenarlik */
+
+  /* --- Durum renkleri --- */
+  --basari:         #1f7a4d;
+  --basari-zemin:   #e2f4ea;
+  --hata:           #c0392b;
+  --hata-zemin:     #fbe6e3;
+  --uyari:          #a55a09;
+  --uyari-zemin:    #fbeed9;
+
+  /* --- Yazi tipleri --- */
+  --yazi-baslik: "Newsreader", Georgia, "Times New Roman", serif;
+  --yazi-govde:  "Public Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --yazi-kod:    "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  /* --- Yazi boyutlari (olcek) --- */
+  --bs-xs:   0.75rem;   /* 12px */
+  --bs-s:    0.875rem;  /* 14px */
+  --bs-m:    1rem;      /* 16px */
+  --bs-l:    1.125rem;  /* 18px */
+  --bs-xl:   1.5rem;    /* 24px */
+  --bs-2xl:  2rem;      /* 32px */
+  --bs-3xl:  2.75rem;   /* 44px */
+
+  /* --- Bosluklar --- */
+  --bo-1: 4px;
+  --bo-2: 8px;
+  --bo-3: 16px;
+  --bo-4: 24px;
+  --bo-5: 40px;
+  --bo-6: 64px;
+  --bo-7: 96px;
+
+  /* --- Diger --- */
+  --kose:        10px;    /* kose yuvarlakligi */
+  --kose-kucuk:  6px;
+  --golge:       0 1px 2px rgba(15,23,32,.06), 0 10px 30px -14px rgba(15,23,32,.20);
+  --genislik:    1120px;  /* icerik maksimum genisligi */
+  --gecis:       .18s ease;
+}

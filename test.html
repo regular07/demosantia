@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test Paneli — Demosantia</title>
+
+<!--
+  test.html — SAĞLIK KONTROL PANELİ
+  Sitedeki her parçanın yerinde olup olmadığını tek ekranda gösterir.
+  Değişiklik yaptıktan sonra buraya bak: hepsi yeşilse yayına hazır.
+  Bu dosya canlıya çıkmaz (docs/06-yayinlama.md'ye bak).
+-->
+
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/02-tokens.css">
+
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--yazi-govde);
+    background: var(--yuzey);
+    color: var(--murekkep);
+    line-height: 1.6;
+  }
+  .kap { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  header.bas { background: var(--murekkep); color: #fff; padding: 26px 0; }
+  header.bas .kap { padding-bottom: 26px; }
+  header.bas h1 { margin: 0; font-size: 22px; }
+  header.bas p { margin: 6px 0 0; color: #9fb0bf; font-size: 14px; }
+
+  .ozet {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin: 22px 0 26px;
+  }
+  .ozet div {
+    flex: 1 1 130px;
+    background: #fff; border: 1px solid var(--cizgi); border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .ozet .s { font-family: var(--yazi-kod); font-size: 26px; font-weight: 700; display: block; }
+  .ozet .e { font-size: 12px; color: var(--soluk); text-transform: uppercase; letter-spacing: .08em; }
+  .ozet .ok  .s { color: var(--basari); }
+  .ozet .bad .s { color: var(--hata); }
+  .ozet .wait .s { color: var(--uyari); }
+
+  section.grup { margin-bottom: 26px; }
+  section.grup > h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--soluk); font-family: var(--yazi-kod); margin: 0 0 10px;
+  }
+  .liste { background: #fff; border: 1px solid var(--cizgi); border-radius: 8px; overflow: hidden; }
+
+  .satir {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 15px; border-bottom: 1px solid var(--yuzey-2);
+    font-size: 14px;
+  }
+  .satir:last-child { border-bottom: none; }
+  .satir .ad { flex: 1; min-width: 0; word-break: break-word; }
+  .satir .ad small { display: block; color: var(--soluk); font-size: 12px; }
+  .satir .ad code { font-family: var(--yazi-kod); font-size: 12.5px; }
+
+  .durum {
+    font-family: var(--yazi-kod); font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 5px; white-space: nowrap; flex: none;
+  }
+  .d-ok   { background: var(--basari-zemin); color: var(--basari); }
+  .d-bad  { background: var(--hata-zemin);   color: var(--hata); }
+  .d-wait { background: var(--uyari-zemin);  color: var(--uyari); }
+
+  .ac {
+    font-size: 12.5px; font-weight: 600; color: var(--marka);
+    text-decoration: none; flex: none;
+  }
+  .ac:hover { text-decoration: underline; }
+
+  button.test {
+    background: var(--marka); color: #fff; border: none;
+    padding: 11px 20px; border-radius: 6px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: inherit;
+  }
+  button.test:hover { background: var(--marka-koyu); }
+  button.test:disabled { opacity: .55; cursor: not-allowed; }
+
+  .cikti {
+    font-family: var(--yazi-kod); font-size: 12.5px;
+    background: var(--murekkep); color: #cfe3e4;
+    padding: 13px 15px; border-radius: 8px; margin-top: 12px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .cikti:empty { display: none; }
+
+  .not {
+    background: #fff; border-left: 3px solid var(--marka);
+    padding: 13px 16px; border-radius: 0 8px 8px 0;
+    font-size: 13.5px; color: var(--murekkep-2); margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header class="bas">
+  <div class="kap">
+    <h1>🔍 Demosantia — Test Paneli</h1>
+    <p>Her parça yerinde mi? Değişiklikten sonra buraya bak.</p>
+  </div>
+</header>
+
+<div class="kap">
+
+  <div class="ozet">
+    <div class="ok"><span class="s" id="say-ok">0</span><span class="e">Geçti</span></div>
+    <div class="bad"><span class="s" id="say-bad">0</span><span class="e">Hatalı</span></div>
+    <div class="wait"><span class="s" id="say-wait">0</span><span class="e">Beklemede</span></div>
+  </div>
+
+  <section class="grup">
+    <h2>1 · Stil dosyaları (css/)</h2>
+    <div class="liste" id="g-css"></div>
+  </section>
+
+  <section class="grup">
+    <h2>2 · Script dosyaları (js/)</h2>
+    <div class="liste" id="g-js"></div>
+  </section>
+
+  <section class="grup">
+    <h2>3 · Ortak parçalar (partials/)</h2>
+    <div class="liste" id="g-parca"></div>
+  </section>
+
+  <section class="grup">
+    <h2>4 · Sayfalar — tıkla, gözle kontrol et</h2>
+    <div class="liste" id="g-sayfa"></div>
+  </section>
+
+  <section class="grup">
+    <h2>5 · Veritabanı bağlantısı</h2>
+    <div class="liste" id="g-db"></div>
+  </section>
+
+  <section class="grup">
+    <h2>6 · Form testi</h2>
+    <div class="liste">
+      <div class="satir">
+        <div class="ad">
+          Sahte bir teklif kaydı gönder
+          <small>Formun doğrulama ve gönderim yolunu uçtan uca dener.</small>
+        </div>
+        <button class="test" id="btn-form">Test gönder</button>
+      </div>
+    </div>
+    <div class="cikti" id="form-cikti"></div>
+  </section>
+
+  <div class="not">
+    <b>Sunucu çalışmıyorsa</b> bu sayfadaki her şey kırmızı olur. Repo klasöründeki
+    <code>basla.command</code> dosyasına çift tıkla, sonra bu sayfayı yenile.
+  </div>
+
+</div>
+
+<!-- Test panelinin kendisi de sitenin gerçek script'lerini kullanır -->
+<script src="js/00-hata.js"></script>
+<script src="js/01-utils.js"></script>
+<script src="js/04-api.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  var CSS = ['01-reset','02-tokens','03-base','04-layout','05-components','06-sections','07-responsive'];
+  var JS  = ['00-hata','01-utils','02-partials','03-nav','04-api','05-quote-form','06-reveal','99-main'];
+  var PARCA = ['header.html','footer.html'];
+  var SAYFA = [
+    ['index.html',     'Ana sayfa — hero, hizmetler, süreç, SSS'],
+    ['services.html',  'Hizmetler — 3 paket + destek paketleri'],
+    ['portfolio.html', 'Portfolyo — örnek çalışmalar'],
+    ['about.html',     'Hakkımızda'],
+    ['contact.html',   'İletişim — teklif formu']
+  ];
+
+  var sayac = { ok: 0, bad: 0, wait: 0 };
+
+  function sayacYaz() {
+    document.getElementById('say-ok').textContent   = sayac.ok;
+    document.getElementById('say-bad').textContent  = sayac.bad;
+    document.getElementById('say-wait').textContent = sayac.wait;
+  }
+
+  /** Listeye bir satır ekler, durumu sonradan güncellenebilir. */
+  function satirEkle(grupId, ad, altYazi, link) {
+    var satir = document.createElement('div');
+    satir.className = 'satir';
+
+    var kutu = document.createElement('div');
+    kutu.className = 'ad';
+    kutu.innerHTML = ad + (altYazi ? '<small>' + altYazi + '</small>' : '');
+    satir.appendChild(kutu);
+
+    if (link) {
+      var a = document.createElement('a');
+      a.className = 'ac';
+      a.href = link;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = 'aç ↗';
+      satir.appendChild(a);
+    }
+
+    var d = document.createElement('span');
+    d.className = 'durum d-wait';
+    d.textContent = 'KONTROL…';
+    satir.appendChild(d);
+
+    document.getElementById(grupId).appendChild(satir);
+    sayac.wait++; sayacYaz();
+
+    return function isaretle(basarili, etiket) {
+      sayac.wait--;
+      if (basarili) { sayac.ok++;  d.className = 'durum d-ok';  d.textContent = etiket || 'TAMAM'; }
+      else          { sayac.bad++; d.className = 'durum d-bad'; d.textContent = etiket || 'HATA'; }
+      sayacYaz();
+    };
+  }
+
+  /** Bir dosya sunucudan çekilebiliyor mu? */
+  function dosyaKontrol(yol, isaretle) {
+    fetch(yol, { cache: 'no-store' })
+      .then(function (c) { isaretle(c.ok, c.ok ? 'TAMAM' : 'HTTP ' + c.status); })
+      .catch(function () { isaretle(false, 'ULAŞILAMADI'); });
+  }
+
+  // --- 1. CSS ---
+  CSS.forEach(function (ad) {
+    var yol = 'css/' + ad + '.css';
+    dosyaKontrol(yol, satirEkle('g-css', '<code>' + yol + '</code>'));
+  });
+
+  // --- 2. JS ---
+  JS.forEach(function (ad) {
+    var yol = 'js/' + ad + '.js';
+    dosyaKontrol(yol, satirEkle('g-js', '<code>' + yol + '</code>'));
+  });
+
+  // --- 3. Parçalar ---
+  PARCA.forEach(function (ad) {
+    var yol = 'partials/' + ad;
+    dosyaKontrol(yol, satirEkle('g-parca', '<code>' + yol + '</code>',
+      'Menü ve alt bilgi bu dosyalardan geliyor'));
+  });
+
+  // --- 4. Sayfalar ---
+  SAYFA.forEach(function (s) {
+    dosyaKontrol(s[0], satirEkle('g-sayfa', '<code>' + s[0] + '</code>', s[1], s[0]));
+  });
+
+  // --- 5. Veritabanı ---
+  var dbIsaret = satirEkle('g-db', 'Sunucu / veritabanı bağlantısı',
+    'js/04-api.js içindeki AYAR.taban adresine bakar');
+  Api.saglikKontrol().then(function (s) {
+    if (s.durum === 'taslak') {
+      dbIsaret(true, 'TASLAK MODU');
+      satirEkle('g-db', 'Not: veritabanı henüz bağlanmadı',
+        'Kademe 1 kurulunca js/04-api.js içinde taslakModu false yapılacak')(true, 'BEKLENEN');
+    } else {
+      dbIsaret(s.durum === 'acik', s.durum === 'acik' ? 'BAĞLI' : 'BAĞLANAMADI');
+    }
+  });
+
+  // --- 6. Form testi ---
+  document.getElementById('btn-form').addEventListener('click', function () {
+    var btn = this;
+    var cikti = document.getElementById('form-cikti');
+    btn.disabled = true;
+    btn.textContent = 'Gönderiliyor…';
+
+    var ornek = {
+      full_name:   'Test Kullanıcı',
+      email:       'test@demosantia.com',
+      phone:       '0500 000 00 00',
+      company:     'Test İşletmesi',
+      package:     'standard',
+      budget_band: '5000-10000',
+      message:     'Bu bir test kaydıdır, test panelinden gönderilmiştir.'
+    };
+
+    Api.teklifGonder(ornek)
+      .then(function (c) {
+        cikti.textContent = c && c.taslak
+          ? '✓ Form yolu çalışıyor.\n\nTASLAK MODU — sunucuya gidilmedi, kayıt oluşmadı.\nGönderilecek olan veri:\n\n' + JSON.stringify(c.veri, null, 2)
+          : '✓ Kayıt gönderildi. Veritabanında quote_requests tablosuna bak.';
+      })
+      .catch(function (e) {
+        cikti.textContent = '✗ HATA: ' + e.message +
+          '\n\nKontrol et: js/04-api.js içindeki AYAR.taban adresi doğru mu?';
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Test gönder';
+      });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* =============================================================
+   04-layout.css
+   NE YAPAR : Sayfa iskeleti — konteyner, bolum araliklari, izgara.
+   BAGLI    : 02-tokens.css
+   KURAL    : Burasi YERLESIM. Renk ve suslemesi 05/06'da.
+   ============================================================= */
+
+.kap {
+  width: 100%;
+  max-width: var(--genislik);
+  margin-inline: auto;
+  padding-inline: var(--bo-4);
+}
+
+.bolum { padding-block: var(--bo-7); }
+.bolum--dar   { padding-block: var(--bo-6); }
+.bolum--yuzey { background: var(--yuzey); }
+
+/* Dikey yigin — kardes ogeler arasi bosluk margin ile degil gap ile */
+.yigin       { display: flex; flex-direction: column; gap: var(--bo-3); }
+.yigin--genis{ display: flex; flex-direction: column; gap: var(--bo-5); }
+
+/* Otomatik sutunlu izgara: icerik sigdigi kadar sutun acar */
+.izgara {
+  display: grid;
+  gap: var(--bo-3);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.izgara--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+/* Bolum basligi bloğu */
+.bolum-basi { display: flex; flex-direction: column; gap: var(--bo-2); margin-bottom: var(--bo-5); }
+.bolum-basi .etiket {
+  font-family: var(--yazi-kod);
+  font-size: var(--bs-xs);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--marka);
+}

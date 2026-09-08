@@ -1,0 +1,43 @@
+/* =============================================================
+   01-reset.css
+   NE YAPAR : Tarayicilarin kendi varsayilan stillerini sifirlar.
+              Boylece Chrome, Safari ve Firefox ayni noktadan baslar.
+   BAGLI    : Hicbir seye. En once yuklenir.
+   DOKUNMA  : Yeni tasarim buraya yazilmaz. Burasi sadece temizlik.
+   ============================================================= */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body,
+h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+
+ul[class], ol[class] { list-style: none; margin: 0; padding: 0; }
+
+img, picture, svg, video {
+  max-width: 100%;
+  display: block;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; border: none; background: none; }
+
+a { text-decoration: none; color: inherit; }
+
+table { border-collapse: collapse; width: 100%; }
+
+/* Hareket azaltma tercihi acik olan kullanicilar icin animasyonlari kis */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

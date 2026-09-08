@@ -1,0 +1,93 @@
+/* =============================================================
+   06-sections.css
+   NE YAPAR : Sadece belirli bir bolume ait gorunumler (hero gibi).
+   BAGLI    : 02-tokens.css
+   KURAL    : Bir stil birden fazla sayfada tekrar etmeye baslarsa
+              onu 05-components.css'e tasi.
+   ============================================================= */
+
+/* ---------- HERO ---------- */
+.hero {
+  background: linear-gradient(180deg, var(--yuzey) 0%, var(--kagit) 100%);
+  border-bottom: 1px solid var(--cizgi);
+  padding-block: var(--bo-7) var(--bo-6);
+}
+/* .kap icinde yasar; ortalanmaz ki sol kenari diger bolumlerle ayni hizada dursun */
+.hero-ic { display: flex; flex-direction: column; gap: var(--bo-3); max-width: 760px; }
+.hero .etiket {
+  font-family: var(--yazi-kod);
+  font-size: var(--bs-xs);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--marka);
+}
+.hero p { font-size: var(--bs-l); color: var(--murekkep-2); }
+.hero-dugmeler { display: flex; flex-wrap: wrap; gap: var(--bo-2); margin-top: var(--bo-2); }
+
+/* ---------- GUVEN SERIDI ---------- */
+.serit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bo-5);
+  padding-block: var(--bo-4);
+  border-top: 1px solid var(--cizgi);
+  margin-top: var(--bo-5);
+}
+.serit div { display: flex; flex-direction: column; gap: 2px; }
+.serit .sayi {
+  font-family: var(--yazi-kod);
+  font-size: var(--bs-xl);
+  font-weight: 700;
+  color: var(--murekkep);
+  font-variant-numeric: tabular-nums;
+}
+.serit .ne { font-size: var(--bs-xs); color: var(--soluk); }
+
+/* ---------- SURECIN ADIMLARI (gercek bir sira — numara bilgi tasiyor) ---------- */
+.adimlar { counter-reset: adim; }
+.adim { display: flex; gap: var(--bo-3); padding-block: var(--bo-3); border-bottom: 1px solid var(--cizgi); }
+.adim:last-child { border-bottom: none; }
+.adim::before {
+  counter-increment: adim;
+  content: counter(adim, decimal-leading-zero);
+  font-family: var(--yazi-kod);
+  font-size: var(--bs-s);
+  font-weight: 700;
+  color: var(--marka);
+  flex: none;
+  padding-top: 3px;
+}
+.adim h3 { font-size: var(--bs-l); margin-bottom: 3px; }
+.adim p  { font-size: var(--bs-s); }
+
+/* ---------- PORTFOLYO ---------- */
+.is-karti { overflow: hidden; padding: 0; }
+.is-karti .gorsel {
+  aspect-ratio: 16 / 10;
+  background: var(--yuzey-2);
+  display: grid;
+  place-items: center;
+  color: var(--soluk);
+  font-family: var(--yazi-kod);
+  font-size: var(--bs-xs);
+}
+.is-karti .icerik { padding: var(--bo-3) var(--bo-4) var(--bo-4); display: flex; flex-direction: column; gap: 6px; }
+
+/* ---------- SSS ---------- */
+.sss details {
+  border-bottom: 1px solid var(--cizgi);
+  padding-block: var(--bo-3);
+}
+.sss summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--bs-m);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--bo-3);
+}
+.sss summary::-webkit-details-marker { display: none; }
+.sss summary::after { content: "+"; color: var(--marka); font-family: var(--yazi-kod); flex: none; }
+.sss details[open] summary::after { content: "−"; }
+.sss p { margin-top: var(--bo-2); font-size: var(--bs-s); }

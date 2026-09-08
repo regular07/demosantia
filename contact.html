@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teklif Al — Demosantia</title>
+<meta name="description" content="İşletmeniz için ücretsiz web sitesi teklifi alın. 1 iş günü içinde dönüş yapıyoruz.">
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/01-reset.css">
+<link rel="stylesheet" href="css/02-tokens.css">
+<link rel="stylesheet" href="css/03-base.css">
+<link rel="stylesheet" href="css/04-layout.css">
+<link rel="stylesheet" href="css/05-components.css">
+<link rel="stylesheet" href="css/06-sections.css">
+<link rel="stylesheet" href="css/07-responsive.css">
+<script src="js/00-hata.js"></script>
+</head>
+<body>
+
+<header class="ust" id="ust"></header>
+
+<section class="hero">
+  <div class="kap">
+    <div class="hero-ic">
+    <span class="etiket">Teklif Al</span>
+    <h1>İşletmenizi anlatın, fiyatı söyleyelim</h1>
+    <p>Formu doldurun, 1 iş günü içinde net bir teklifle dönelim. Ücretsiz, bağlayıcı değil.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bolum">
+  <div class="kap" style="max-width:720px">
+    <form id="teklif-formu" class="yigin" novalidate>
+
+      <div class="alan">
+        <label for="full_name">Adınız Soyadınız *</label>
+        <input type="text" id="full_name" name="full_name" autocomplete="name">
+        <span class="alan-hata"></span>
+      </div>
+
+      <div class="alan">
+        <label for="email">E-posta *</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+        <span class="alan-hata"></span>
+      </div>
+
+      <div class="alan">
+        <label for="phone">Telefon</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="05xx xxx xx xx">
+        <span class="alan-hata"></span>
+      </div>
+
+      <div class="alan">
+        <label for="company">İşletme adı</label>
+        <input type="text" id="company" name="company" autocomplete="organization">
+        <span class="alan-hata"></span>
+      </div>
+
+      <div class="alan">
+        <label for="package">Hangi paket ilginizi çekiyor? *</label>
+        <select id="package" name="package">
+          <option value="">Seçiniz…</option>
+          <option value="basic">Basic — Tek sayfa tanıtım (3.000₺)</option>
+          <option value="standard">Standart — Menü, galeri, yorumlar (6.000₺)</option>
+          <option value="premium">Premium — Çok sayfalı, yönetilebilir (12.000₺)</option>
+        </select>
+        <span class="alan-hata"></span>
+      </div>
+
+      <div class="alan">
+        <label for="budget_band">Bütçe aralığınız</label>
+        <select id="budget_band" name="budget_band">
+          <option value="">Belirtmek istemiyorum</option>
+          <option value="0-5000">5.000₺ altı</option>
+          <option value="5000-10000">5.000₺ – 10.000₺</option>
+          <option value="10000-20000">10.000₺ – 20.000₺</option>
+          <option value="20000+">20.000₺ üzeri</option>
+        </select>
+        <span class="alan-hata"></span>
+      </div>
+
+      <div class="alan">
+        <label for="message">İşletmenizi ve ihtiyacınızı kısaca anlatın *</label>
+        <textarea id="message" name="message" placeholder="Ne iş yapıyorsunuz, sitede neler olsun istiyorsunuz?"></textarea>
+        <span class="alan-hata"></span>
+      </div>
+
+      <button type="submit" class="dugme dugme--birincil">Teklif iste</button>
+
+      <!-- Gonderim sonucu buraya yazilir: basarili ya da hatali -->
+      <div id="form-sonuc" class="form-sonuc"></div>
+
+      <p style="font-size:.8rem;color:var(--soluk)">
+        * işaretli alanlar zorunludur. Bilgileriniz yalnızca size dönüş yapmak için kullanılır.
+      </p>
+    </form>
+  </div>
+</section>
+
+<footer class="alt" id="alt"></footer>
+<script src="js/01-utils.js"></script>
+<script src="js/02-partials.js"></script>
+<script src="js/03-nav.js"></script>
+<script src="js/04-api.js"></script>
+<script src="js/05-quote-form.js"></script>
+<script src="js/06-reveal.js"></script>
+<script src="js/99-main.js"></script>
+</body>
+</html>
