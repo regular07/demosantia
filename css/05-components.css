@@ -144,9 +144,14 @@
   flex: none;
 }
 .menu { display: flex; align-items: center; gap: var(--bo-4); }
-.menu a { font-size: var(--bs-s); font-weight: 500; color: var(--murekkep-2); }
-.menu a:hover { color: var(--marka); }
-.menu a.aktif { color: var(--marka); font-weight: 700; }
+
+/* :not(.dugme) SART. Bu sart olmadan ".menu a" (ozgulluk 0,1,1)
+   ".dugme--birincil" kuralini (0,1,0) eziyor ve "Teklif Al" butonunun
+   yazisi beyaz yerine gri oluyordu -> teal zeminde okunmuyordu.
+   (8 Eylul 2026'da olculerek bulundu: kontrast 1.7:1, gereken 4.5:1) */
+.menu a:not(.dugme) { font-size: var(--bs-s); font-weight: 500; color: var(--murekkep-2); }
+.menu a:not(.dugme):hover { color: var(--marka); }
+.menu a.aktif:not(.dugme) { color: var(--marka); font-weight: 700; }
 
 .menu-dugme { display: none; padding: 8px; border-radius: var(--kose-kucuk); }
 .menu-dugme span { display: block; width: 20px; height: 2px; background: var(--murekkep); margin: 4px 0; }
