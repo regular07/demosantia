@@ -11,6 +11,30 @@ cd ~/Projects/demosantia
 python3 -m http.server 8000
 ```
 
+## ÖNEMLİ: GitHub Pages sadece statik dosya sunar
+
+`server/` klasöründeki Node API servisi GitHub Pages'te **çalışmaz**. Orada sadece
+HTML, CSS, JS ve görseller sunulur.
+
+`js/04-api.js` bunu kendisi anlıyor:
+
+| Site nerede açılıyor | Ne yapar |
+|---|---|
+| `localhost` | Yerel servise bağlanır, **gerçek kayıt** atar |
+| `github.io` / `demosantia.com` | `CANLI_API` boşsa **demo modu** — form çalışır, doğrular, ama kayıt göndermez ve bunu kullanıcıya söyler |
+
+Yani canlı link bir **vitrin/demo** olarak sorunsuz çalışır; form sessizce patlamaz.
+
+### Formu canlıda gerçekten çalıştırmak
+
+API servisini bir sunucuya koyduğunda `js/04-api.js` içindeki tek satırı doldur:
+
+```js
+var CANLI_API = 'https://api.demosantia.com';
+```
+
+Gerisi kendiliğinden çalışır — `taslakModu` otomatik kapanır.
+
 ## Canlıya alma (GitHub Pages)
 
 ### İlk kurulum — bir kez

@@ -90,7 +90,8 @@ window.TeklifFormu = (function () {
           form.reset();
           sonuc.className = 'form-sonuc form-sonuc--basari';
           sonuc.textContent = c && c.taslak
-            ? 'Form dogru calisiyor. (Taslak modu — veritabani henuz bagli degil, kayit gonderilmedi.)'
+            ? 'Bu bir demo sitesidir — form calisiyor ancak talep kaydedilmedi. ' +
+              'Gercek site yayina alindiginda talepler dogrudan bize ulasir.'
             : 'Talebiniz alindi. En kisa surede donus yapacagiz.';
         })
         .catch(function (e) {

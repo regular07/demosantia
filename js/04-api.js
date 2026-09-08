@@ -15,16 +15,37 @@ window.Api = (function () {
   /* -----------------------------------------------------------
      AYARLAR — tasima aninda degisecek TEK yer burasi.
      ----------------------------------------------------------- */
+  /* -----------------------------------------------------------
+     ORTAM TESPITI
+
+     GitHub Pages SADECE statik dosya sunar — Node servisi orada
+     CALISMAZ. Bu yuzden adres sabit yazilamaz: site nerede
+     aciliyorsa ona gore karar veriyoruz.
+
+       yerelde  -> kendi bilgisayarindaki servis (gercek kayit)
+       canlida  -> CANLI_API tanimliysa oraya, degilse demo modu
+
+     Demo modunda form calisir, dogrulama yapar, ama kayit
+     gondermez ve bunu kullaniciya acikca soyler. Sessizce
+     patlamasindansa durumu bildirmesi dogru.
+     ----------------------------------------------------------- */
+
+  // Servisi bir sunucuya tasidiginda BURAYI doldur, gerisi kendiliginden calisir.
+  var CANLI_API = '';   // ornek: 'https://api.demosantia.com'
+
+  var yerelMi = ['localhost', '127.0.0.1', ''].indexOf(location.hostname) !== -1;
+
   var AYAR = {
     // Kademe 1 (su an): kendi bilgisayarindaki Node servisi -> yerel PostgreSQL
-    // Kademe 2 (canli): ayni servis bir sunucuda
-    // Kademe 3 (ileride): https://api.demosantia.com (ASP.NET Core olabilir)
+    // Kademe 2 (canli): ayni servis bir sunucuda  -> CANLI_API doldurulur
+    // Kademe 3 (ileride): ASP.NET Core Web API    -> yine CANLI_API
     //
     // REST sozlesmesi ayni kaldigi surece servisin hangi dille yazildigi
     // bu dosyayi ilgilendirmez. Sadece adres degisir.
-    taban: 'http://localhost:3001',
+    taban: yerelMi ? 'http://localhost:3001' : CANLI_API,
 
-    taslakModu: false   // true iken sunucuya hic gitmez, sadece dogrular
+    // Adres yoksa sunucuya hic gitme, sadece dogrula
+    taslakModu: !(yerelMi || CANLI_API)
   };
 
   /* -----------------------------------------------------------
