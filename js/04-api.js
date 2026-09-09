@@ -33,6 +33,13 @@ window.Api = (function () {
   // Servisi bir sunucuya tasidiginda BURAYI doldur, gerisi kendiliginden calisir.
   var CANLI_API = '';   // ornek: 'https://api.demosantia.com'
 
+  // CANLI FORM SERVISI — Web3Forms (ucretsiz: ayda 250 gonderim, e-postaya duser).
+  // Anahtari web3forms.com'dan al, buraya yapistir. GIZLI DEGIL — istemci kodunda
+  // durmasi normaldir; sadece senin dogruladigin e-postaya gonderim yapar.
+  // Dolu VE site canlidayken (yerel degil): form dogrudan Web3Forms'a gider,
+  // Node servisi devreye girmez. Bir gun VPS'e tasirsan bunu bosalt, CANLI_API doldur.
+  var WEB3FORMS_KEY = '';
+
   // localhost VEYA ev agindaki bir IP (telefondan test ederken)
   // 10.x.x.x / 192.168.x.x / 172.16-31.x.x = ozel ag araliklari
   var ozelAg = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/;
@@ -50,8 +57,8 @@ window.Api = (function () {
     // Boylece telefondan 10.x.x.x:8000 acinca API 10.x.x.x:3001 olur.
     taban: yerelMi ? location.protocol + '//' + location.hostname + ':3001' : CANLI_API,
 
-    // Adres yoksa sunucuya hic gitme, sadece dogrula
-    taslakModu: !(yerelMi || CANLI_API)
+    // Hicbir hedef yoksa sunucuya hic gitme, sadece dogrula
+    taslakModu: !(yerelMi || CANLI_API || WEB3FORMS_KEY)
   };
 
   /* -----------------------------------------------------------
@@ -101,10 +108,48 @@ window.Api = (function () {
    * @param {{full_name:string, email:string, phone:string,
    *          company:string, package:string, budget_band:string,
    *          message:string}} veri
-   * @returns {Promise<{tamam:boolean, id:string}>}
+   * @returns {Promise<{tamam:boolean, id:string|null}>}
    */
   function teklifGonder(veri) {
+    // Canli sitede (yerel degil) ve Web3Forms anahtari varsa -> dogrudan Web3Forms.
+    // Backend'e tek temas noktasi hala burasi; form bunu bilmez.
+    if (!yerelMi && WEB3FORMS_KEY) {
+      return web3formsGonder(veri);
+    }
     return istek('POST', '/api/quote-requests', veri);
+  }
+
+  /* Web3Forms'a gonderim. Cevap: { success:true } -> HTTP 200.
+     Node servisiyle ayni sozu tutar: { tamam:true, id:null } doner. */
+  function web3formsGonder(veri) {
+    var govde = {
+      access_key: WEB3FORMS_KEY,
+      subject:    'Yeni teklif talebi — Demosantia',
+      from_name:  'Demosantia web sitesi',
+      // E-postada okunakli dursun diye Turkce alan adlari:
+      'Ad Soyad': veri.full_name,
+      email:      veri.email,          // yanitla-adresi olarak kullanilir
+      'Telefon':  veri.phone   || '—',
+      'Firma':    veri.company || '—',
+      'Paket':    veri.package,
+      'Butce':    veri.budget_band || '—',
+      'Mesaj':    veri.message
+    };
+
+    return fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(govde)
+    }).then(function (cevap) {
+      return cevap.json().catch(function () { return {}; }).then(function (c) {
+        if (!cevap.ok || !c.success) {
+          var e = new Error(c.message || ('Gonderim basarisiz (' + cevap.status + ')'));
+          e.durum = cevap.status;
+          throw e;
+        }
+        return { tamam: true, id: null };
+      });
+    });
   }
 
   /** Servis ve veritabani ayakta mi? test.html bunu kullanir. */
