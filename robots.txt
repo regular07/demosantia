@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://regular07.github.io/demosantia/sitemap.xml
