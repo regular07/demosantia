@@ -1,12 +1,20 @@
 /* =============================================================
    04-api.js   ★ BACKEND'E TEK TEMAS NOKTASI
-   NE YAPAR : Sunucuya giden BUTUN cagrilar bu dosyada.
-   NEDEN    : Servisi degistirdigimizde (Node -> ASP.NET Core) ya da
-              baska bir sunucuya tasidigimizda SADECE BU DOSYA degisir.
-              Sayfalar ve formlar sunucunun ne oldugunu bilmez.
+   NE YAPAR : Teklif formunun verisi buradan cikar. Sayfalar ve
+              formlar arkada ne oldugunu (Node / Supabase / Web3Forms)
+              BILMEZ — servis degisince SADECE bu dosya degisir.
    BAGLI    : 00-hata.js
-   SERVIS   : server/ klasorundeki Node + Express servisi.
-              REST sozlesmesi: server/README.md
+
+   HEDEFLER (oncelik sirasiyla):
+     1) Supabase  -> CANLI sitede varsayilan. Kendi Postgres tablomuz
+        (quote_requests). Kayit kalici + sorgulanabilir. Aylik sinir yok.
+        Tarayicidan dogrudan REST ile yazar; RLS sadece INSERT'e izin verir,
+        okuma kapalidir. Kotuye kullanim/tekrar korumasi sunucu tarafinda
+        (trigger): ayni e-postadan saatte 5, ayni mesaj 10 dk icinde tekrar -> ret.
+     2) Web3Forms -> yedek. Supabase bosaltilirsa devreye girer (ayda 250).
+     3) Yerel Node servisi (server/) -> gelistirme/test. localhost'ta calisir.
+
+   Yerelde denemek icin adres cubuguna ?form=supabase veya ?form=web3 ekle.
    ============================================================= */
 
 window.Api = (function () {
@@ -15,124 +23,131 @@ window.Api = (function () {
   /* -----------------------------------------------------------
      AYARLAR — tasima aninda degisecek TEK yer burasi.
      ----------------------------------------------------------- */
-  /* -----------------------------------------------------------
-     ORTAM TESPITI
 
-     GitHub Pages SADECE statik dosya sunar — Node servisi orada
-     CALISMAZ. Bu yuzden adres sabit yazilamaz: site nerede
-     aciliyorsa ona gore karar veriyoruz.
+  // 1) SUPABASE (canli varsayilan). Anahtar "publishable" — istemci kodunda
+  //    durmasi normaldir; guvenligi RLS saglar (disaridan sadece INSERT).
+  var SUPABASE_URL = 'https://avwxujnzaycatxkgflyn.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_2AypfknuSPcwL28RZbrsZQ_S89EoO5a';
 
-       yerelde  -> kendi bilgisayarindaki servis (gercek kayit)
-       canlida  -> CANLI_API tanimliysa oraya, degilse demo modu
-
-     Demo modunda form calisir, dogrulama yapar, ama kayit
-     gondermez ve bunu kullaniciya acikca soyler. Sessizce
-     patlamasindansa durumu bildirmesi dogru.
-     ----------------------------------------------------------- */
-
-  // Servisi bir sunucuya tasidiginda BURAYI doldur, gerisi kendiliginden calisir.
-  var CANLI_API = '';   // ornek: 'https://api.demosantia.com'
-
-  // CANLI FORM SERVISI — Web3Forms (ucretsiz: ayda 250 gonderim, e-postaya duser).
-  // Anahtari web3forms.com'dan al, buraya yapistir. GIZLI DEGIL — istemci kodunda
-  // durmasi normaldir; sadece senin dogruladigin e-postaya gonderim yapar.
-  // Dolu VE site canlidayken (yerel degil): form dogrudan Web3Forms'a gider,
-  // Node servisi devreye girmez. Bir gun VPS'e tasirsan bunu bosalt, CANLI_API doldur.
+  // 2) WEB3FORMS (yedek). Supabase'i bosaltirsan bu devreye girer.
   var WEB3FORMS_KEY = '4bccf148-a573-46a9-9984-c97be47514cb';
 
+  // 3) Kendi sunucuna tasirsan (VPS / ev sunucusu) burayi doldur, hepsi atlanir.
+  var CANLI_API = '';   // ornek: 'https://api.demosantia.com'
+
   // localhost VEYA ev agindaki bir IP (telefondan test ederken)
-  // 10.x.x.x / 192.168.x.x / 172.16-31.x.x = ozel ag araliklari
   var ozelAg = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/;
   var yerelMi = ['localhost', '127.0.0.1', ''].indexOf(location.hostname) !== -1
              || ozelAg.test(location.hostname);
 
-  var AYAR = {
-    // Kademe 1 (su an): kendi bilgisayarindaki Node servisi -> yerel PostgreSQL
-    // Kademe 2 (canli): ayni servis bir sunucuda  -> CANLI_API doldurulur
-    // Kademe 3 (ileride): ASP.NET Core Web API    -> yine CANLI_API
-    //
-    // REST sozlesmesi ayni kaldigi surece servisin hangi dille yazildigi
-    // bu dosyayi ilgilendirmez. Sadece adres degisir.
-    // Siteyi hangi adresten actiysan API'yi de ayni adreste ara.
-    // Boylece telefondan 10.x.x.x:8000 acinca API 10.x.x.x:3001 olur.
-    taban: yerelMi ? location.protocol + '//' + location.hostname + ':3001' : CANLI_API,
+  // Yerelde belirli bir hedefi zorlamak icin: ?form=supabase | ?form=web3 | ?form=node
+  var zorla = (/[?&]form=(supabase|web3|node)\b/.exec(location.search) || [])[1] || '';
 
-    // Hicbir hedef yoksa sunucuya hic gitme, sadece dogrula
-    taslakModu: !(yerelMi || CANLI_API || WEB3FORMS_KEY)
+  var AYAR = {
+    taban: yerelMi ? location.protocol + '//' + location.hostname + ':3001' : CANLI_API,
+    // Hicbir hedef yoksa sunucuya hic gitme, sadece dogrula (demo modu)
+    taslakModu: !(yerelMi || CANLI_API || SUPABASE_URL || WEB3FORMS_KEY)
   };
 
   /* -----------------------------------------------------------
-     Ic yardimci: JSON istegi
+     Ic yardimci: yerel Node servisine JSON istegi
      ----------------------------------------------------------- */
   function istek(yontem, yol, veri) {
     if (AYAR.taslakModu) {
-      // Sunucu bagli degilken formun geri kalanini test edebilmek icin.
       console.info('[Api] TASLAK MODU — sunucuya gidilmedi. Veri:', veri);
       return new Promise(function (coz) {
         setTimeout(function () { coz({ taslak: true, veri: veri }); }, 400);
       });
     }
 
-    var secenek = {
-      method: yontem,
-      headers: { 'Accept': 'application/json' }
-    };
+    var secenek = { method: yontem, headers: { 'Accept': 'application/json' } };
     if (veri) {
       secenek.headers['Content-Type'] = 'application/json';
       secenek.body = JSON.stringify(veri);
     }
 
     return fetch(AYAR.taban + yol, secenek).then(function (cevap) {
-      return cevap.json()
-        .catch(function () { return {}; })   // govde JSON degilse bos nesne
-        .then(function (govde) {
-          if (!cevap.ok) {
-            // Servis Turkce hata mesaji donuyor; onu kullan.
-            var e = new Error(govde.hata || ('Sunucu ' + cevap.status));
-            e.durum = cevap.status;
-            e.hatalar = govde.hatalar || null;   // alan bazli hatalar
-            throw e;
-          }
-          return govde;
-        });
+      return cevap.json().catch(function () { return {}; }).then(function (govde) {
+        if (!cevap.ok) {
+          var e = new Error(govde.hata || ('Sunucu ' + cevap.status));
+          e.durum = cevap.status;
+          e.hatalar = govde.hatalar || null;
+          throw e;
+        }
+        return govde;
+      });
     });
   }
 
   /* -----------------------------------------------------------
-     DISARIYA ACILAN FONKSIYONLAR
-     Sayfalar sadece bunlari cagirir.
+     DISARIYA ACILAN FONKSIYONLAR — sayfalar sadece bunlari cagirir.
      ----------------------------------------------------------- */
 
   /**
-   * Teklif talebini kaydeder.
-   * @param {{full_name:string, email:string, phone:string,
-   *          company:string, package:string, budget_band:string,
-   *          message:string}} veri
-   * @returns {Promise<{tamam:boolean, id:string|null}>}
+   * Teklif talebini kaydeder. Hedefi ortama gore secer.
+   * @returns {Promise<{tamam:boolean, id:(number|null), taslak?:boolean}>}
    */
   function teklifGonder(veri) {
-    // Canli sitede (yerel degil) ve Web3Forms anahtari varsa -> dogrudan Web3Forms.
-    // Backend'e tek temas noktasi hala burasi; form bunu bilmez.
-    // Yerelde denemek icin: sayfayi ?form=web3 ile ac -> Node atlanir.
-    var web3Zorla = /[?&]form=web3\b/.test(location.search);
-    if (WEB3FORMS_KEY && (web3Zorla || !yerelMi)) {
+    // Bal tuzagi: gercek kullanici bos birakir. Doluysa bot -> sessizce yut.
+    if (veri && veri.botcheck) {
+      return Promise.resolve({ tamam: true, id: null });
+    }
+
+    var canliBaglam = !yerelMi;   // GitHub Pages / gercek alan adi
+
+    if (SUPABASE_URL && SUPABASE_KEY && (zorla === 'supabase' || (canliBaglam && zorla !== 'web3' && zorla !== 'node'))) {
+      return supabaseGonder(veri);
+    }
+    if (WEB3FORMS_KEY && (zorla === 'web3' || (canliBaglam && zorla !== 'node'))) {
       return web3formsGonder(veri);
     }
     return istek('POST', '/api/quote-requests', veri);
   }
 
-  /* Web3Forms'a gonderim. Cevap: { success:true } -> HTTP 200.
-     Node servisiyle ayni sozu tutar: { tamam:true, id:null } doner. */
+  /* --- 1) SUPABASE: tarayicidan dogrudan REST insert ---
+     RLS sadece INSERT'e izin verir. Trigger tekrar/kotuye kullanimi eler
+     ve Turkce hata mesaji dondurur; onu kullaniciya gosteriyoruz. */
+  function supabaseGonder(veri) {
+    var satir = {
+      full_name:   veri.full_name,
+      email:       veri.email,
+      phone:       veri.phone || null,
+      company:     veri.company || null,
+      package:     veri.package,
+      budget_band: veri.budget_band || null,
+      message:     veri.message,
+      source:      'website'
+    };
+
+    return fetch(SUPABASE_URL + '/rest/v1/quote_requests', {
+      method: 'POST',
+      headers: {
+        'apikey':        SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type':  'application/json',
+        'Prefer':        'return=minimal'   // satiri geri isteme (okuma kapali)
+      },
+      body: JSON.stringify(satir)
+    }).then(function (cevap) {
+      if (cevap.ok) return { tamam: true, id: null };
+      return cevap.json().catch(function () { return {}; }).then(function (c) {
+        // PostgREST: { message, details, hint, code }
+        var e = new Error(c.message || ('Kayit olusturulamadi (' + cevap.status + ')'));
+        e.durum = cevap.status;
+        throw e;
+      });
+    });
+  }
+
+  /* --- 2) WEB3FORMS: yedek. Cevap { success:true } -> HTTP 200 --- */
   function web3formsGonder(veri) {
     var govde = {
       access_key: WEB3FORMS_KEY,
       subject:    'Yeni teklif talebi — Demosantia',
       from_name:  'Demosantia web sitesi',
-      // Bal tuzagi: gercek kullanici bos birakir, bot doldurursa Web3Forms eler.
       botcheck:   veri.botcheck || '',
-      // E-postada okunakli dursun diye Turkce alan adlari:
       'Ad Soyad': veri.full_name,
-      email:      veri.email,          // yanitla-adresi olarak kullanilir
+      email:      veri.email,
       'Telefon':  veri.phone   || '—',
       'Firma':    veri.company || '—',
       'Paket':    veri.package,
@@ -161,6 +176,13 @@ window.Api = (function () {
     if (AYAR.taslakModu) {
       return Promise.resolve({ durum: 'taslak', mesaj: 'Servis baglanmadi (taslak modu)' });
     }
+    if (!yerelMi && SUPABASE_URL) {
+      return fetch(SUPABASE_URL + '/rest/v1/', { headers: { 'apikey': SUPABASE_KEY } })
+        .then(function (c) {
+          return { durum: c.ok ? 'acik' : 'kapali', mesaj: 'Supabase REST ' + c.status };
+        })
+        .catch(function (e) { return { durum: 'kapali', mesaj: e.message }; });
+    }
     return istek('GET', '/api/health')
       .then(function (c) {
         return {
@@ -169,10 +191,7 @@ window.Api = (function () {
         };
       })
       .catch(function (e) {
-        return {
-          durum: 'kapali',
-          mesaj: e.message + ' — server/ klasorunde "npm start" calisiyor mu?'
-        };
+        return { durum: 'kapali', mesaj: e.message + ' — server/ klasorunde "npm start" calisiyor mu?' };
       });
   }
 
