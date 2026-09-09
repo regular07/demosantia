@@ -38,7 +38,7 @@ window.Api = (function () {
   // durmasi normaldir; sadece senin dogruladigin e-postaya gonderim yapar.
   // Dolu VE site canlidayken (yerel degil): form dogrudan Web3Forms'a gider,
   // Node servisi devreye girmez. Bir gun VPS'e tasirsan bunu bosalt, CANLI_API doldur.
-  var WEB3FORMS_KEY = '';
+  var WEB3FORMS_KEY = '4bccf148-a573-46a9-9984-c97be47514cb';
 
   // localhost VEYA ev agindaki bir IP (telefondan test ederken)
   // 10.x.x.x / 192.168.x.x / 172.16-31.x.x = ozel ag araliklari
@@ -113,7 +113,9 @@ window.Api = (function () {
   function teklifGonder(veri) {
     // Canli sitede (yerel degil) ve Web3Forms anahtari varsa -> dogrudan Web3Forms.
     // Backend'e tek temas noktasi hala burasi; form bunu bilmez.
-    if (!yerelMi && WEB3FORMS_KEY) {
+    // Yerelde denemek icin: sayfayi ?form=web3 ile ac -> Node atlanir.
+    var web3Zorla = /[?&]form=web3\b/.test(location.search);
+    if (WEB3FORMS_KEY && (web3Zorla || !yerelMi)) {
       return web3formsGonder(veri);
     }
     return istek('POST', '/api/quote-requests', veri);
@@ -126,6 +128,8 @@ window.Api = (function () {
       access_key: WEB3FORMS_KEY,
       subject:    'Yeni teklif talebi — Demosantia',
       from_name:  'Demosantia web sitesi',
+      // Bal tuzagi: gercek kullanici bos birakir, bot doldurursa Web3Forms eler.
+      botcheck:   veri.botcheck || '',
       // E-postada okunakli dursun diye Turkce alan adlari:
       'Ad Soyad': veri.full_name,
       email:      veri.email,          // yanitla-adresi olarak kullanilir
