@@ -1,0 +1,33 @@
+# Supabase (ucretsiz plan) 7 gun istek almazsa projeyi duraklatir.
+# Bu is haftada 2 kez REST API'ye gercek bir istek atarak projeyi uyanik tutar.
+# Elle calistirmak icin: Actions sekmesi -> Supabase Keepalive -> Run workflow.
+#
+# Not: kullanilan anahtar "publishable" (js/04-api.js icinde zaten herkese acik),
+# gizli degil. RLS sadece INSERT'e izin verdigi icin bu SELECT bos doner, yeterli.
+
+name: Supabase Keepalive
+
+on:
+  schedule:
+    - cron: '17 6 * * 1,4'   # her Pazartesi ve Persembe 06:17 UTC (en fazla ~3-4 gun ara)
+  workflow_dispatch:          # elle tetikleme
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Supabase REST'e istek at
+        run: |
+          URL="https://avwxujnzaycatxkgflyn.supabase.co/rest/v1/quote_requests?select=id&limit=1"
+          KEY="sb_publishable_2AypfknuSPcwL28RZbrsZQ_S89EoO5a"
+          CODE=$(curl -s -o /tmp/resp.txt -w "%{http_code}" -m 30 \
+                 -H "apikey: $KEY" -H "Authorization: Bearer $KEY" "$URL")
+          echo "HTTP $CODE"
+          cat /tmp/resp.txt
+          # 200 = tablo okundu (RLS acik olsa), 401/403 = RLS kapali ama proje UYANIK.
+          # Hepsi projenin ayakta oldugunu gosterir; sadece aginin/DNS'in coktugu
+          # durumda (000) veya 5xx'te hata ver.
+          case "$CODE" in
+            2*|401|403|404) echo "OK — proje uyanik"; exit 0 ;;
+            *) echo "HATA — beklenmeyen yanit"; exit 1 ;;
+          esac
