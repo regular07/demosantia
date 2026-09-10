@@ -226,23 +226,31 @@
 
 /* =============================================================
    HERO VITRIN — 11-hero-insa.js
-   Gercek bir demonun tarayici penceresi. Scroll ile girince
-   cerceve yukselir, ekran goruntusu icine "yuklenir".
+   Gercek bir demonun tarayici penceresi.
+   - Scroll ile girince cerceve yukselir, gorsel icine "yuklenir"
+   - Fare ustundeyken 3B egilir (imleci takip eder) + parilti gezer
    ============================================================= */
 .vitrin {
   width: 100%;
   max-width: 480px;
-  perspective: 1200px;
+  perspective: 1100px;
 }
 .vitrin-cerceve {
-  border-radius: 12px;
+  position: relative;
+  border-radius: 14px;
   overflow: hidden;
   background: var(--gece-2);
-  border: 1px solid var(--gece-cizgi);
-  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .65);
+  /* Cila: acik ince kenar + ic isik cizgisi + koyu golge + hafif marka parlamasi */
+  border: 1px solid rgba(255, 255, 255, .14);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .06) inset,
+    0 24px 55px -20px rgba(0, 0, 0, .75),
+    0 6px 30px -10px rgba(34, 224, 208, .16);
+  will-change: transform;
+  transform-style: preserve-3d;
   opacity: 0;
   transform: translateY(26px) rotateX(7deg) scale(.96);
-  transform-origin: top center;
+  transform-origin: center center;
   transition: opacity .7s cubic-bezier(.22,1,.36,1),
               transform .7s cubic-bezier(.22,1,.36,1);
 }
@@ -253,14 +261,13 @@
   align-items: center;
   gap: 6px;
   padding: 9px 12px;
-  background: var(--gece-3);
-  border-bottom: 1px solid var(--gece-cizgi);
+  background: linear-gradient(var(--gece-3), var(--gece-2));
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
 }
 .vitrin-nokta {
   width: 9px; height: 9px;
   border-radius: 50%;
-  background: var(--gece-soluk);
-  opacity: .55;
+  background: rgba(255, 255, 255, .28);
 }
 .vitrin-adres {
   margin-left: 10px;
@@ -268,12 +275,12 @@
   font-size: 11px;
   letter-spacing: .02em;
   color: var(--gece-soluk);
-  background: var(--gece-2);
+  background: rgba(255, 255, 255, .05);
   padding: 2px 12px;
   border-radius: 20px;
 }
 
-.vitrin-ekran { background: var(--gece-2); overflow: hidden; }
+.vitrin-ekran { position: relative; background: var(--gece-2); overflow: hidden; }
 .vitrin-ekran img {
   display: block;
   width: 100%;
@@ -285,8 +292,25 @@
 }
 .vitrin.gorundu .vitrin-ekran img { opacity: 1; transform: none; }
 
+/* Fareyle gezen parilti — JS --px / --py degiskenlerini yazar */
+.vitrin-parlama {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+  background: radial-gradient(
+    circle at var(--px, 50%) var(--py, 0%),
+    rgba(255, 255, 255, .22),
+    rgba(255, 255, 255, 0) 42%
+  );
+  mix-blend-mode: soft-light;
+}
+.vitrin-cerceve:hover .vitrin-parlama { opacity: 1; }
+
 @media (prefers-reduced-motion: reduce) {
   .vitrin-cerceve, .vitrin-ekran img { transition: none; }
+  .vitrin-parlama { display: none; }
 }
 
 /* Hero'yu iki sutuna bol: solda yazi, sagda vitrin. */
