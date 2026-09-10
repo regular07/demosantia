@@ -225,46 +225,74 @@
 
 
 /* =============================================================
-   HERO INSA — 11-hero-insa.js
-   Tel kafes kutular sirayla yerine oturur.
+   HERO VITRIN — 11-hero-insa.js
+   Gercek bir demonun tarayici penceresi. Scroll ile girince
+   cerceve yukselir, ekran goruntusu icine "yuklenir".
    ============================================================= */
-.insa {
-  position: relative;
-  aspect-ratio: 4 / 3;
+.vitrin {
   width: 100%;
-  max-width: 460px;
-  border: 1px solid var(--gece-cizgi);
+  max-width: 480px;
+  perspective: 1200px;
+}
+.vitrin-cerceve {
   border-radius: 12px;
-  background: rgba(11, 16, 20, .55);
-  backdrop-filter: blur(2px);
-}
-.insa-parca {
-  position: absolute;
-  border: 1px solid var(--marka-vurgu);
-  border-radius: 4px;
-  background: rgba(34, 224, 208, .07);
+  overflow: hidden;
+  background: var(--gece-2);
+  border: 1px solid var(--gece-cizgi);
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .65);
   opacity: 0;
-  transform: translateY(14px) scale(.96);
-  transition: opacity .55s cubic-bezier(.22,1,.36,1),
-              transform .55s cubic-bezier(.22,1,.36,1);
+  transform: translateY(26px) rotateX(7deg) scale(.96);
+  transform-origin: top center;
+  transition: opacity .7s cubic-bezier(.22,1,.36,1),
+              transform .7s cubic-bezier(.22,1,.36,1);
 }
-.insa-parca.yerinde { opacity: 1; transform: none; }
+.vitrin.gorundu .vitrin-cerceve { opacity: 1; transform: none; }
 
-/* Parca turune gore ton farki — duzen okunsun */
-.insa-parca--ust-cubuk { background: rgba(34,224,208,.16); }
-.insa-parca--baslik    { background: rgba(34,224,208,.22); border-color: var(--marka-vurgu); }
-.insa-parca--dugme     { background: var(--marka-vurgu); border-color: var(--marka-vurgu); }
-.insa-parca--metin     { background: rgba(159,178,189,.16); border-color: var(--gece-cizgi); }
-.insa-parca--kart      { background: rgba(34,224,208,.05); }
+.vitrin-cubuk {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  background: var(--gece-3);
+  border-bottom: 1px solid var(--gece-cizgi);
+}
+.vitrin-nokta {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--gece-soluk);
+  opacity: .55;
+}
+.vitrin-adres {
+  margin-left: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: .02em;
+  color: var(--gece-soluk);
+  background: var(--gece-2);
+  padding: 2px 12px;
+  border-radius: 20px;
+}
 
-/* Hero'yu iki sutuna bol: solda yazi, sagda insa */
-/* Ikinci sutun 'auto' OLAMAZ: insa kutusunun icindeki parcalar mutlak
-   konumlu, yani tarayici 'icerik yok' deyip sutunu sifira cokertiyor.
-   (8 Eylul 2026: sutun 2.6px olmustu, kutu gorunmuyordu.)
-   Bu yuzden acik bir ust sinir veriyoruz. */
+.vitrin-ekran { background: var(--gece-2); overflow: hidden; }
+.vitrin-ekran img {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity .6s ease .3s,
+              transform .9s cubic-bezier(.22,1,.36,1) .3s;
+}
+.vitrin.gorundu .vitrin-ekran img { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vitrin-cerceve, .vitrin-ekran img { transition: none; }
+}
+
+/* Hero'yu iki sutuna bol: solda yazi, sagda vitrin. */
 .hero-izgara {
   display: grid;
-  grid-template-columns: 1fr minmax(0, 460px);
+  grid-template-columns: 1fr minmax(0, 480px);
   gap: var(--bo-5);
   align-items: center;
 }
