@@ -58,6 +58,11 @@ function teklifDogrula(gelen) {
   if (v.package && !PAKETLER.includes(v.package)) {
     hatalar.package = 'Gecersiz paket. Beklenen: ' + PAKETLER.join(', ');
   }
+  // Telefon istege bagli; yazilmissa Turkiye bicimi olmali.
+  // Rakam disini at, sonra: istege bagli 90/0 onek + [2-5] + 9 rakam.
+  if (v.phone && !/^(90)?0?[2-5][0-9]{9}$/.test(v.phone.replace(/\D/g, ''))) {
+    hatalar.phone = 'Telefon numarasi gecersiz. Ornek: 0532 123 45 67';
+  }
   if (v.budget_band && !BUTCELER.includes(v.budget_band)) {
     hatalar.budget_band = 'Gecersiz butce araligi.';
   }

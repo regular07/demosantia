@@ -17,6 +17,15 @@ window.TeklifFormu = (function () {
     message:   'Kisa da olsa bir mesaj yaziniz.'
   };
 
+  /* Turkiye telefon bicimi kontrolu.
+     Rakam disini at, sonra: istege bagli 90 / 0 onek + [2-5] + 9 rakam.
+     Kapsar: 05XX XXX XX XX (cep), 02/03/04 (sabit), +90 5XX..., 5XX...
+     Reddeder: "1234", "asdf", "0000000", rastgele kisa diziler. */
+  function telefonGecerliMi(ham) {
+    var d = String(ham).replace(/\D/g, '');
+    return /^(90)?0?[2-5][0-9]{9}$/.test(d);
+  }
+
   function alanKutusu(ad) {
     var girdi = U.$('[name="' + ad + '"]');
     return girdi ? girdi.closest('.alan') : null;
@@ -32,6 +41,7 @@ window.TeklifFormu = (function () {
 
   function temizle() {
     Object.keys(ZORUNLU).forEach(function (ad) { hataYaz(ad, ''); });
+    hataYaz('phone', '');   // zorunlu degil ama bicim hatasi verebiliyor
   }
 
   /** Formu okur, dogrular. Gecerliyse veri nesnesi, degilse null doner. */
@@ -50,6 +60,12 @@ window.TeklifFormu = (function () {
     // E-posta bicimi
     if (veri.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(veri.email)) {
       hataYaz('email', 'E-posta adresi gecerli gorunmuyor.');
+      gecerli = false;
+    }
+
+    // Telefon istege bagli; ama yazilmissa gecerli bir numara olmali
+    if (veri.phone && !telefonGecerliMi(veri.phone)) {
+      hataYaz('phone', 'Telefon numarasi gecerli gorunmuyor. Ornek: 0532 123 45 67');
       gecerli = false;
     }
 

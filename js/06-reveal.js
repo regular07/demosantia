@@ -51,12 +51,10 @@ window.Belir = (function () {
     oge.dataset.bolundu = '1';
   }
 
-  /** Sirali kaplarin cocuklarina artan gecikme verir. */
-  function siraGecikmesi(kap) {
-    Array.prototype.forEach.call(kap.children, function (c, i) {
-      c.style.transitionDelay = (i * 90) + 'ms';
-    });
-  }
+  /* NOT: Onceden "sirali" kaplarin cocuklarina artan gecikme (i*90ms)
+     veriliyordu. 3'lu kart siralarinda son kart yarim saniye sonra
+     geldigi icin "gecikmeli / bozuk" gorunuyordu (Akif fark etti).
+     Artik grup birlikte canlaniyor — dalga efekti kaldirildi. */
 
   function baslat() {
     var ogeler = U.$$('[data-canlan]');
@@ -71,7 +69,6 @@ window.Belir = (function () {
     ogeler.forEach(function (o) {
       var tur = o.getAttribute('data-canlan') || 'kelime';
       if (tur === 'kelime')  kelimelereBol(o);
-      if (tur === 'sirali')  siraGecikmesi(o);
       o.classList.add('canlanacak');
     });
 
