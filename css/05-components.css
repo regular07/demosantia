@@ -322,3 +322,62 @@
 }
 .menu a:not(.dugme):hover::after,
 .menu a.aktif:not(.dugme)::after { transform: scaleX(1); }
+
+/* =============================================================
+   ILETISIM KARTLARI — contact.html
+   Musteri form doldurmak istemezse: telefon / WhatsApp / e-posta.
+   Kartin TAMAMI tiklanabilir (mobilde parmakla kolay).
+   ============================================================= */
+.iletisim-izgara { gap: var(--bo-3); }
+
+.iletisim-kart {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+  min-height: 44px;            /* dokunma hedefi */
+}
+.iletisim-kart:hover { border-color: var(--marka); }
+
+.iletisim-ikon { font-size: 1.5rem; line-height: 1; margin-bottom: 2px; }
+
+.iletisim-kart h3 {
+  font-size: var(--bs-s);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--soluk);
+  font-weight: 600;
+}
+.iletisim-deger {
+  font-size: var(--bs-l);
+  font-weight: 600;
+  color: var(--marka);
+  word-break: break-word;      /* uzun e-posta tasmasin */
+}
+.iletisim-alt { font-size: .8rem; color: var(--soluk); }
+
+/* WhatsApp karti kendi rengiyle ayrissin */
+.iletisim-kart--wa:hover { border-color: #25d366; }
+.iletisim-kart--wa .iletisim-deger { color: #128c4a; }
+
+/* -------------------------------------------------------------
+   SABIT WHATSAPP BUTONU — her sayfada sag altta
+   ------------------------------------------------------------- */
+.wa-sabit {
+  position: fixed;
+  right: 18px; bottom: 18px;
+  z-index: 60;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 22px -6px rgba(0, 0, 0, .45);
+  transition: transform var(--gecis), box-shadow var(--gecis);
+}
+.wa-sabit:hover { transform: translateY(-2px); box-shadow: 0 12px 26px -6px rgba(37, 211, 102, .6); }
+.wa-sabit svg { width: 30px; height: 30px; fill: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-sabit { transition: none; }
+}
