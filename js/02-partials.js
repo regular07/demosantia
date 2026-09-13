@@ -33,7 +33,7 @@ window.Parcalar = (function () {
           'Sayfayi cift tiklayarak mi actin? basla.command ile acman gerekiyor.'
         );
         // Site tamamen bos kalmasin diye asgari bir baglanti birak
-        kutu.innerHTML = '<div class="kap" style="padding:14px 24px"><a href="index.html">Demosantia</a></div>';
+        kutu.innerHTML = '<div class="kap" style="padding:14px 24px"><a href="index.html">Demosentia</a></div>';
       });
   }
 

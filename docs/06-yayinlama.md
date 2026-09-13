@@ -21,7 +21,7 @@ HTML, CSS, JS ve görseller sunulur.
 | Site nerede açılıyor | Ne yapar |
 |---|---|
 | `localhost` | Yerel servise bağlanır, **gerçek kayıt** atar |
-| `github.io` / `demosantia.com` | `CANLI_API` boşsa **demo modu** — form çalışır, doğrular, ama kayıt göndermez ve bunu kullanıcıya söyler |
+| `github.io` / `demosentia.com` | `CANLI_API` boşsa **demo modu** — form çalışır, doğrular, ama kayıt göndermez ve bunu kullanıcıya söyler |
 
 Yani canlı link bir **vitrin/demo** olarak sorunsuz çalışır; form sessizce patlamaz.
 
@@ -30,7 +30,7 @@ Yani canlı link bir **vitrin/demo** olarak sorunsuz çalışır; form sessizce 
 API servisini bir sunucuya koyduğunda `js/04-api.js` içindeki tek satırı doldur:
 
 ```js
-var CANLI_API = 'https://api.demosantia.com';
+var CANLI_API = 'https://api.demosentia.com';
 ```
 
 Gerisi kendiliğinden çalışır — `taslakModu` otomatik kapanır.
@@ -42,7 +42,7 @@ Gerisi kendiliğinden çalışır — `taslakModu` otomatik kapanır.
 ```bash
 cd ~/Projects/demosantia
 git add -A
-git commit -m "Demosantia sitesi ilk surum"
+git commit -m "Demosentia sitesi ilk surum"
 
 # GitHub'da repo olustur ve gonder
 gh repo create demosantia --public --source=. --push
@@ -55,7 +55,7 @@ Birkaç dakika sonra site şurada yayında olur:
 
 ### Alan adı bağlama
 
-1. GitHub → Settings → Pages → Custom domain → `demosantia.com` → Save
+1. GitHub → Settings → Pages → Custom domain → `demosentia.com` → Save
 2. Alan adı sağlayıcında DNS kayıtları:
    - `A` kaydı → GitHub Pages IP adresleri
    - `CNAME` (www) → `<kullanici-adin>.github.io`

@@ -49,7 +49,7 @@ window.Hata = (function () {
    */
   function goster(baslik, yer, ipucu) {
     // Konsola her zaman yaz — canlida da lazim olabilir
-    console.error('[Demosantia] ' + baslik + (yer ? ' @ ' + yer : ''), ipucu || '');
+    console.error('[Demosentia] ' + baslik + (yer ? ' @ ' + yer : ''), ipucu || '');
     if (!GELISTIRME) return;
 
     sayac++;

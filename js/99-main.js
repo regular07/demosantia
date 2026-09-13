@@ -23,7 +23,7 @@ U.hazir(function () {
   HeroInsa.baslat();    // hero'da kendini insa eden duzen
 
   if (Hata.GELISTIRME) {
-    console.info('%c Demosantia ', 'background:#0d7d84;color:#fff;border-radius:3px',
+    console.info('%c Demosentia ', 'background:#0d7d84;color:#fff;border-radius:3px',
                  'gelistirme modu — hatalar ekranda gosterilecek. Test paneli: /test.html');
   }
 });

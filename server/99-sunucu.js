@@ -73,7 +73,7 @@ uygulama.use((hata, _req, res, _next) => {
 
   console.log('');
   console.log('  ┌─────────────────────────────────────────────┐');
-  console.log('  │  Demosantia API                             │');
+  console.log('  │  Demosentia API                             │');
   console.log('  └─────────────────────────────────────────────┘');
   console.log(`  Adres        : http://localhost:${AYAR.port}`);
   console.log(`  Saglik       : http://localhost:${AYAR.port}/api/health`);

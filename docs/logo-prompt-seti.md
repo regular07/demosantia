@@ -1,4 +1,4 @@
-# Demosantia — Logo Prompt Seti
+# Demosentia — Logo Prompt Seti
 
 **Nerede kullanılır:** higgsfield.ai **web arayüzü** (tarayıcı) — sınırsız modeller, BEDAVA.
 CLI'dan / skill'den ÜRETME, kredi yakar. Model: **GPT Image** (logo/tasarım/metin için en iyisi).
@@ -12,7 +12,7 @@ Claude'a ver → temiz SVG'ye çevirip repoya koyarız (`assets/logo/`), `favico
 
 ## Marka özeti (her prompt'ta geçerli)
 
-- **İsim:** Demosantia · **iş:** küçük/yerel işletmeler için web tasarım stüdyosu (kafe,
+- **İsim:** Demosentia · **iş:** küçük/yerel işletmeler için web tasarım stüdyosu (kafe,
   restoran, kuaför, klinik). Ajans değil — iki kişilik stüdyo.
 - **Karakter:** temiz, modern, teknik ama sıcak, minimal, kendinden emin.
 - **Renk:** birincil camgöbeği `#0E8F96`, elektrik vurgu `#22E0D0`, koyu zemin `#0B1014`,

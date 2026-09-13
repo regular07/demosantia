@@ -1,6 +1,6 @@
-# Demosantia
+# Demosentia
 
-Küçük işletmeler için web sitesi stüdyosu. Bu repo, demosantia.com sitesinin kaynağıdır.
+Küçük işletmeler için web sitesi stüdyosu. Bu repo, demosentia.com sitesinin kaynağıdır.
 
 ## Hızlı başlangıç
 

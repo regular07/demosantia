@@ -1,4 +1,4 @@
-# Demosantia API
+# Demosentia API
 
 Teklif formunun arkasındaki küçük REST servisi. Node.js + Express + PostgreSQL.
 

@@ -33,7 +33,7 @@ window.Api = (function () {
   var WEB3FORMS_KEY = '4bccf148-a573-46a9-9984-c97be47514cb';
 
   // 3) Kendi sunucuna tasirsan (VPS / ev sunucusu) burayi doldur, hepsi atlanir.
-  var CANLI_API = '';   // ornek: 'https://api.demosantia.com'
+  var CANLI_API = '';   // ornek: 'https://api.demosentia.com'
 
   // localhost VEYA ev agindaki bir IP (telefondan test ederken)
   var ozelAg = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/;
@@ -143,8 +143,8 @@ window.Api = (function () {
   function web3formsGonder(veri) {
     var govde = {
       access_key: WEB3FORMS_KEY,
-      subject:    'Yeni teklif talebi — Demosantia',
-      from_name:  'Demosantia web sitesi',
+      subject:    'Yeni teklif talebi — Demosentia',
+      from_name:  'Demosentia web sitesi',
       botcheck:   veri.botcheck || '',
       'Ad Soyad': veri.full_name,
       email:      veri.email,
