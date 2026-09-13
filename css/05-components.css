@@ -136,7 +136,10 @@
 .logo-im {
   width: 30px; height: 30px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--marka-vurgu), var(--marka-koyu));
+  /* Duz renk — Higgsfield'da denenip onaylanan yon buydu (12 Eyl):
+     eski gradyan, sitenin kendi "gradyan klisesinden kacinildi" ilkesiyle
+     celisiyordu (bkz. 02-tokens.css). */
+  background: var(--marka-logo);
   color: #fff;
   display: grid; place-items: center;
   font-family: var(--yazi-baslik);

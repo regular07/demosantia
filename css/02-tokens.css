@@ -19,6 +19,9 @@
   --marka-koyu:     #075055;
   --marka-acik:     #d6f2f3;
   --marka-vurgu:    #22e0d0;   /* KOYU zeminde parlayan elektrik ton */
+  --marka-logo:     #56bfcc;   /* logo ikonu icin: yumusak turkuaz, Demet Sen'in ismindeki
+                                   "S" -> "Ş" fikrinden ilham; ayri tutuldu, sitenin genel
+                                   vurgu rengini (marka-vurgu) degistirmez */
 
   --sicak:          #ff7a45;   /* karsit vurgu — az ve yerinde kullan */
   --sicak-koyu:     #c4501f;
