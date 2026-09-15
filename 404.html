@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sayfa bulunamadı — Demosentia</title>
+<meta name="description" content="Aradığınız sayfa Demosentia'da bulunamadı.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Yollar koke gore mutlak: 404 sitenin herhangi bir derinliginden
+     tetiklenebilir (ornek: /urunler/eski-sayfa), goreli yol orada kirilir. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/css/01-reset.css">
+<link rel="stylesheet" href="/css/02-tokens.css">
+<link rel="stylesheet" href="/css/03-base.css">
+<link rel="stylesheet" href="/css/04-layout.css">
+<link rel="stylesheet" href="/css/05-components.css">
+
+<style>
+  .hata-sayfa {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.25rem;
+  }
+  .hata-ic { max-width: 34rem; }
+  .hata-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: .625rem;
+    margin-bottom: 2.5rem;
+    text-decoration: none;
+  }
+  .hata-logo-im {
+    width: 2.25rem; height: 2.25rem;
+    border-radius: .5rem;
+    background: #56bfcc;
+    color: #fff;
+    font-family: Georgia, serif;
+    font-size: 1.35rem;
+    display: grid; place-items: center;
+  }
+  .hata-logo-ad { font-weight: 600; font-size: 1.15rem; }
+  .hata-kod {
+    font-family: Georgia, serif;
+    font-size: clamp(3.5rem, 12vw, 5.5rem);
+    line-height: 1;
+    color: #56bfcc;
+    margin-bottom: 1rem;
+  }
+  .hata-baslik {
+    font-family: Newsreader, Georgia, serif;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: .875rem;
+  }
+  .hata-metin { opacity: .75; margin-bottom: 2rem; line-height: 1.6; }
+  .hata-dugmeler {
+    display: flex; gap: .75rem;
+    justify-content: center; flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<main class="hata-sayfa">
+  <div class="hata-ic">
+    <a href="/" class="hata-logo">
+      <span class="hata-logo-im">D</span>
+      <span class="hata-logo-ad">Demosentia</span>
+    </a>
+
+    <div class="hata-kod">404</div>
+    <h1 class="hata-baslik">Bu sayfa burada değil.</h1>
+    <p class="hata-metin">
+      Aradığınız adres kaldırılmış ya da hiç var olmamış olabilir.
+      Sitede yenilendik — eski bağlantılar artık çalışmıyor.
+    </p>
+
+    <div class="hata-dugmeler">
+      <a href="/" class="dugme dugme--birincil">Ana sayfaya dön</a>
+      <a href="/contact.html" class="dugme">Bize ulaşın</a>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
