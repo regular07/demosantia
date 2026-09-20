@@ -4,14 +4,15 @@
               veren seyler:
                 1) Miknatis butonlar   — imlece dogru hafifce kayar
                 2) Karta 3B egim       — imlece gore hafif doner
-                3) Scroll ilerleme     — sayfanin ustunde ince cizgi
+                3) Tik dalgasi         — tiklanan noktadan halka genisler
+                4) Scroll ilerleme     — sayfanin ustunde ince cizgi
    BAGLI    : 01-utils.js
 
    ---------------------------------------------------------------
    KURALLAR
    ---------------------------------------------------------------
-   - Hepsi SADECE fare olan cihazlarda calisir. Dokunmatikte imlec
-     yok, bu etkiler orada anlamsiz ve zararli olur.
+   - Miknatis ve egim SADECE fare olan cihazlarda calisir (imlece
+     bagli). Tik dalgasi ve scroll ilerleme dokunmatikte de calisir.
    - prefers-reduced-motion aciksa hicbiri calismaz.
    - Hicbiri icerigi ya da tiklanabilirligi degistirmez; sadece
      gorsel katman. Bozulursa site aynen calisir.
@@ -75,7 +76,31 @@ window.Etkiler = (function () {
   }
 
   /* -----------------------------------------------------------
-     3) SCROLL ILERLEME CIZGISI
+     3) TIK DALGASI
+     Butona tiklanan noktadan genisleyen bir halka cikar, tiklamayi
+     "hissettirir". Fare ve dokunmatikte de calisir (hover'a bagli
+     degil) — sadece prefers-reduced-motion'da kapali.
+     ----------------------------------------------------------- */
+  function dalga() {
+    U.$$('.dugme').forEach(function (dugme) {
+      U.on(dugme, 'pointerdown', function (e) {
+        var eski = dugme.querySelector('.dugme-dalga');
+        if (eski) eski.remove();
+
+        var r = dugme.getBoundingClientRect();
+        var halka = document.createElement('span');
+        halka.className = 'dugme-dalga';
+        halka.style.left = (e.clientX - r.left) + 'px';
+        halka.style.top  = (e.clientY - r.top)  + 'px';
+        halka.setAttribute('aria-hidden', 'true');
+        dugme.appendChild(halka);
+        halka.addEventListener('animationend', function () { halka.remove(); });
+      });
+    });
+  }
+
+  /* -----------------------------------------------------------
+     4) SCROLL ILERLEME CIZGISI
      Sayfanin en ustunde, ne kadar okundugunu gosteren ince cizgi.
      Bu etki dokunmatikte de calisir — imlece bagli degil.
      ----------------------------------------------------------- */
@@ -106,6 +131,7 @@ window.Etkiler = (function () {
     if (AZ_HAREKET) return;
 
     ilerleme();                  // dokunmatikte de calisir
+    dalga();                     // dokunmatikte de calisir
     if (!FARE_VAR) return;       // asagidakiler sadece fare varken
 
     miknatis();

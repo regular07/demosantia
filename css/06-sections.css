@@ -113,13 +113,23 @@
 .bolum--gece .dugme--ikincil { color: var(--marka-vurgu); border-color: var(--gece-cizgi); }
 .bolum--gece .dugme--ikincil:hover { background: var(--gece-2); border-color: var(--marka-vurgu); }
 
-/* ---------- HERO: koyu, gorselli ---------- */
+/* ---------- HERO: koyu, gorselli ----------
+   Header artik sag-soldan bosluklu yuzen bir pill (bkz. .ust,
+   05-components.css) ve kendi alani kadar yer kapliyor. O alanin
+   ustunde herhangi bir zemin yoksa sayfanin varsayilan (beyaz)
+   zemini gorunur — pill'in arkasinda absurt bir beyazlik olusur.
+   Cozum: hero'yu header kadar yukari cek (negatif margin), kaybolan
+   alani ayni miktarda ust padding olarak geri ekle. Ic gorunum
+   (h1'in nerede basladigi) DEGISMEZ, sadece koyu zemin/gorsel artik
+   header'in ARKASINA kadar uzaniyor. --ust-yukseklik degeri
+   03-nav.js tarafindan olculup kok elemana yaziliyor. */
 .hero {
   position: relative;
   background: var(--gece);
   color: var(--gece-metin);
   border-bottom: none;
-  padding-block: var(--bo-7) var(--bo-6);
+  margin-top: calc(-1 * var(--ust-yukseklik, 84px));
+  padding-block: calc(var(--bo-7) + var(--ust-yukseklik, 84px)) var(--bo-6);
   overflow: hidden;
 }
 .hero-fon {

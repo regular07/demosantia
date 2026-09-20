@@ -27,14 +27,18 @@
 
   .kap { padding-inline: var(--bo-3); }
 
-  /* Menu: normalde gizli, hamburger ile acilir */
+  /* Menu: normalde gizli, hamburger ile acilir. Pill'in hemen
+     altina, ayni genislikte, ayni kose yuvarlakligiyla oturur —
+     pill'in devami gibi gorunsun diye. */
   .menu {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 8px);
     left: 0;
     right: 0;
     background: var(--kagit);
-    border-bottom: 1px solid var(--cizgi);
+    border: 1px solid var(--cizgi);
+    border-radius: 14px;
+    box-shadow: var(--derinlik-3);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
@@ -47,7 +51,8 @@
   .menu .dugme { margin-top: var(--bo-2); }
 
   .menu-dugme { display: flex; }
-  .ust { position: relative; }
+  .ust { padding-inline: var(--bo-2); }
+  .ust-ic { padding: 10px 16px; border-radius: 16px; }
 
   .serit { gap: var(--bo-4); }
   .hero-dugmeler .dugme { flex: 1 1 100%; }

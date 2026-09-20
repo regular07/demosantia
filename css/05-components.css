@@ -114,23 +114,55 @@
 .form-sonuc--hata   { background: var(--hata-zemin);   color: var(--hata); }
 .form-sonuc:empty { display: none; }
 
-/* ---------- UST MENU ---------- */
+/* ---------- UST MENU ----------
+   Tam genislik CERCEVE degil: sag-soldan bosluklu, kose yuvarlak
+   "yuzen" bir serit. Disaridaki .ust sadece bosluk + sticky konum
+   tutar (tiklanamaz — pointer-events kapali), gorunen kutu .ust-ic'tir.
+
+   ONEMLI (Akif, 20.09.2026 — iki tur duzeltmeden sonra netlesti):
+   Buzlu cam efekti SADECE hero'nun ustundeyken degil, SITENIN HER
+   YERINDE ayni kalmali. Onceki versiyon scroll'da acik bolume gecince
+   duz opak beyaza donuyordu — pill + disindaki bosluklar hep beyaza
+   karisip "bos, tanimsiz bir leke" gibi duruyordu ("sagi solu bos ve
+   beyaz", profesyonel gorunumu bozuyordu). Tek, TUTARLI stil: her
+   zaman yari-saydam + blur + görünür kenarlik/golge — koyu hero'da da
+   acik bolumde de kendini belli eden ayni cam panel. */
 .ust {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--cizgi);
+  padding: var(--bo-2) var(--bo-3) 0;
+  pointer-events: none;
 }
 .ust-ic {
+  pointer-events: auto;
   max-width: var(--genislik);
   margin-inline: auto;
-  padding: 14px var(--bo-4);
+  padding: 12px 22px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--bo-3);
+  background: rgba(255,255,255,.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.4);
+  box-shadow: var(--derinlik-2);
+  transition: box-shadow var(--gecis-yumusak), background var(--gecis-yumusak),
+              border-color var(--gecis-yumusak);
+}
+/* Logo/menu yazisi koyu (--murekkep) — hem hero'nun koyu gorseli hem
+   acik bolumler ustunde okunsun diye hafif yazi golgesi HER ZAMAN acik
+   (onceki gibi scroll'a gore acilip kapanmiyor — stil tek/tutarli). */
+.ust-ic .logo,
+.ust-ic .menu a:not(.dugme) { text-shadow: 0 1px 10px rgba(255,255,255,.6); }
+
+/* Scroll'da sadece golge biraz belirginlesir — zemin/blur DEGISMEZ,
+   boylece hero'dan acik bolume geciste stil sekmez, hep ayni cam. */
+.ust--kaydi .ust-ic {
+  border-color: rgba(217,227,233,.9);
+  box-shadow: var(--derinlik-3);
 }
 .logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: var(--bs-l); color: var(--murekkep); }
 .logo-im {
@@ -165,7 +197,25 @@
   align-items: center; justify-content: center;
   flex-direction: column;
 }
-.menu-dugme span { display: block; width: 20px; height: 2px; background: var(--murekkep); margin: 2.5px 0; }
+.menu-dugme span {
+  display: block;
+  width: 20px; height: 2px;
+  background: var(--murekkep);
+  margin: 2.5px 0;
+  border-radius: 2px;
+  transform-origin: center;
+  transition: transform .32s cubic-bezier(.34, 1.56, .64, 1),
+              opacity .2s ease,
+              background .2s ease;
+}
+/* Hamburger -> carpi: 03-nav.js zaten aria-expanded'i guncelliyor,
+   yeni bir JS/sinif gerekmiyor, dogrudan bu attribute'a bagliyoruz.
+   Ust ve alt cizgi ortada bulusup carpi olur, ortadaki cizgi
+   kaybolur. Brand rengine gecis "aktif" durumunu vurgular. */
+.menu-dugme[aria-expanded="true"] span { background: var(--marka); }
+.menu-dugme[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-dugme[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.menu-dugme[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ---------- FOOTER ---------- */
 .alt { background: var(--murekkep); color: #cbd6e0; padding-block: var(--bo-6) var(--bo-4); }
@@ -311,7 +361,30 @@
 
 .dugme { position: relative; overflow: hidden; }
 .dugme--birincil:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px var(--marka); }
-.dugme { transition: background var(--gecis), color var(--gecis), border-color var(--gecis), transform var(--gecis), box-shadow var(--gecis); }
+.dugme { transition: background var(--gecis), color var(--gecis), border-color var(--gecis), transform var(--gecis), box-shadow var(--gecis), filter var(--gecis); }
+
+/* Basinca hafif kararma — transform kullanmiyoruz cunku miknatis
+   efekti (09-etkiler.js) zaten transform'u inline set ediyor, ikisi
+   cakisirsa biri kaybolur. filter cakismaz, her zaman calisir. */
+.dugme:active { filter: brightness(.9); }
+
+/* Tik dalgasi — tiklanan noktadan genisleyen halka (09-etkiler.js
+   .dugme-dalga eklip kaldirir). currentColor kullaniyoruz ki
+   birincil/ikincil butonda otomatik dogru renk cikssin. */
+.dugme-dalga {
+  position: absolute;
+  width: 10px; height: 10px;
+  left: 0; top: 0;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .35;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  animation: dalga-genisle .55s ease-out forwards;
+}
+@keyframes dalga-genisle {
+  to { transform: translate(-50%, -50%) scale(26); opacity: 0; }
+}
 
 /* Menu linkleri: alt cizgi soldan saga cizilir */
 .menu a:not(.dugme) { position: relative; }
