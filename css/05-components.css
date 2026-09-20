@@ -119,14 +119,13 @@
    "yuzen" bir serit. Disaridaki .ust sadece bosluk + sticky konum
    tutar (tiklanamaz — pointer-events kapali), gorunen kutu .ust-ic'tir.
 
-   ONEMLI (Akif, 20.09.2026 — iki tur duzeltmeden sonra netlesti):
-   Buzlu cam efekti SADECE hero'nun ustundeyken degil, SITENIN HER
-   YERINDE ayni kalmali. Onceki versiyon scroll'da acik bolume gecince
-   duz opak beyaza donuyordu — pill + disindaki bosluklar hep beyaza
-   karisip "bos, tanimsiz bir leke" gibi duruyordu ("sagi solu bos ve
-   beyaz", profesyonel gorunumu bozuyordu). Tek, TUTARLI stil: her
-   zaman yari-saydam + blur + görünür kenarlik/golge — koyu hero'da da
-   acik bolumde de kendini belli eden ayni cam panel. */
+   ONEMLI (Akif, 20.09.2026 — uc turdur duzeltiliyor, bu son karar):
+   Sayfa TEPESINDEYKEN pill DUZ OPAK BEYAZ durur — cam efekti yok.
+   Scroll baslar baslamaz (birkac piksel) buzlu cama GECIS yapar ve
+   o andan itibaren (hero'da da acik bolumde de) hep ayni yari-saydam
+   cam kalir. Yani sira: opak (tepede) -> cam (scroll'da, kalici).
+   Esik kucuk tutulur (bkz. 03-nav.js, ~16px) ki gecis erkenden,
+   sayfa daha hero'dayken baslasin. */
 .ust {
   position: sticky;
   top: 0;
@@ -144,26 +143,28 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--bo-3);
+  background: var(--kagit);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--cizgi);
+  box-shadow: var(--derinlik-1);
+  transition: box-shadow var(--gecis-yumusak), background var(--gecis-yumusak),
+              border-color var(--gecis-yumusak), backdrop-filter var(--gecis-yumusak);
+}
+/* Scroll'a girince: opak beyazdan buzlu cama gecer, kalici kalir. */
+.ust--kaydi .ust-ic {
   background: rgba(255,255,255,.55);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.4);
-  box-shadow: var(--derinlik-2);
-  transition: box-shadow var(--gecis-yumusak), background var(--gecis-yumusak),
-              border-color var(--gecis-yumusak);
-}
-/* Logo/menu yazisi koyu (--murekkep) — hem hero'nun koyu gorseli hem
-   acik bolumler ustunde okunsun diye hafif yazi golgesi HER ZAMAN acik
-   (onceki gibi scroll'a gore acilip kapanmiyor — stil tek/tutarli). */
-.ust-ic .logo,
-.ust-ic .menu a:not(.dugme) { text-shadow: 0 1px 10px rgba(255,255,255,.6); }
-
-/* Scroll'da sadece golge biraz belirginlesir — zemin/blur DEGISMEZ,
-   boylece hero'dan acik bolume geciste stil sekmez, hep ayni cam. */
-.ust--kaydi .ust-ic {
-  border-color: rgba(217,227,233,.9);
+  border-color: rgba(255,255,255,.4);
   box-shadow: var(--derinlik-3);
 }
+/* Logo/menu yazisi koyu (--murekkep) — pill cama donunce hero'nun
+   koyu gorseli ustunde de okunsun diye hafif yazi golgesi. Tepede
+   (opak beyazken) zaten kontrast yeterli, golgeye gerek yok. */
+.ust--kaydi .ust-ic .logo,
+.ust--kaydi .ust-ic .menu a:not(.dugme) { text-shadow: 0 1px 10px rgba(255,255,255,.6); }
+
 .logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: var(--bs-l); color: var(--murekkep); }
 .logo-im {
   width: 30px; height: 30px;

@@ -37,18 +37,15 @@ window.Nav = (function () {
       }
     });
 
-    // Pill scroll durumu: hero'nun (koyu, gorselli) bittigi yere kadar
-    // buzlu-cam kalir; acik zemine geçince duz beyaza doner. Esik
-    // hero'nun gercek yuksekligi — sabit piksel degil, cunku hero
-    // boyu ekrana/icerige gore degisiyor.
+    // Pill scroll durumu: sayfa tepedeyken pill DUZ OPAK BEYAZ durur.
+    // Scroll baslar baslamaz (kucuk esik — hero'dan daha cikmadan)
+    // buzlu cama gecer ve o andan sonra hep cam kalir (Akif, 20.09.2026).
     if (ust) {
-      var hero = U.$('.hero');
+      var esik = 16;
       var guncelle = function () {
-        var esik = hero ? hero.offsetHeight - 80 : 8;
         ust.classList.toggle('ust--kaydi', window.scrollY > esik);
       };
       window.addEventListener('scroll', guncelle, { passive: true });
-      window.addEventListener('resize', guncelle);
       guncelle();
 
       // Header'in gercek yuksekligini kok elemana yaz — koyu hero
