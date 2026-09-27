@@ -1,6 +1,6 @@
 /* =============================================================
    01-utils.js
-   NE YAPAR : Her yerde lazim olan 5 kucuk yardimci. Baska hicbir sey.
+   NE YAPAR : Her yerde lazim olan 6 kucuk yardimci. Baska hicbir sey.
    BAGLI    : Hicbir seye.
    ============================================================= */
 
@@ -31,5 +31,19 @@ window.U = (function () {
     return son === '' ? 'index.html' : son;
   }
 
-  return { $: $, $$: $$, on: on, hazir: hazir, sayfaAdi: sayfaAdi };
+  /** Hero giris animasyonlarini sinematik perde kalkana kadar beklet.
+   *  <html class="sekans"> varsa (12-hero-sahne.js calisiyor) ve oge hero
+   *  icindeyse fn, perde kalktiginda ('hero:acildi' olayi) BIR KEZ calisir.
+   *  Aksi halde (mobil, hareket azaltma, hero disi) fn hemen calisir.
+   *  U.heroBekle(h1, function () { gozcu.observe(h1); }) */
+  var heroAcildi = false;
+  document.addEventListener('hero:acildi', function () { heroAcildi = true; });
+  function heroBekle(oge, fn) {
+    var perdeli = document.documentElement.classList.contains('sekans') &&
+                  oge && oge.closest && oge.closest('.hero');
+    if (!perdeli || heroAcildi) { fn(); return; }
+    document.addEventListener('hero:acildi', function () { fn(); }, { once: true });
+  }
+
+  return { $: $, $$: $$, on: on, hazir: hazir, sayfaAdi: sayfaAdi, heroBekle: heroBekle };
 })();

@@ -73,6 +73,17 @@ window.HeroSahne = (function () {
 
   var SART = '(min-width: 769px) and (prefers-reduced-motion: no-preference)';
 
+  // Perde kalkinca hero'nun kendi giris animasyonlari (kelime belirme,
+  // sayaclar, vitrin) baslasin diye BIR KEZ 'hero:acildi' olayi yayilir.
+  // Dinleyen: U.heroBekle (01-utils.js). Geri kaydirip inince tekrar yok.
+  var ACILMA_ESIGI = 0.85;   // gecis evresinin bu kadari bitince
+  var acildi = false;
+  function heroAc() {
+    if (acildi) return;
+    acildi = true;
+    document.dispatchEvent(new CustomEvent('hero:acildi'));
+  }
+
   /* ---- Yardimcilar ---- */
   function kareAdresi(i) {                // i: 0 tabanli
     var no = String(i + 1);
@@ -173,6 +184,7 @@ window.HeroSahne = (function () {
       var g = dilim(p, AYAR.evre.gecis);
       sahne.style.opacity = (1 - g).toFixed(3);
       sahne.style.visibility = g >= 1 ? 'hidden' : '';
+      if (g >= ACILMA_ESIGI) heroAc();
     }
 
     boyutla();
@@ -206,6 +218,7 @@ window.HeroSahne = (function () {
       sahne.removeAttribute('style');
       tuval.removeAttribute('style');
       document.documentElement.classList.remove('sekans');
+      heroAc();   // perde yok -> bekleyen animasyonlar hemen oynasin
     };
   }
 
@@ -216,6 +229,7 @@ window.HeroSahne = (function () {
     // GSAP (CDN) yuklenemediyse: perdeyi kaldir, hero dogrudan gorunsun
     if (!window.gsap || !window.ScrollTrigger) {
       document.documentElement.classList.remove('sekans');
+      heroAc();   // perde yok -> bekleyen animasyonlar hemen oynasin
       return;
     }
     gsap.registerPlugin(ScrollTrigger);
@@ -229,6 +243,7 @@ window.HeroSahne = (function () {
     });
     if (!window.matchMedia(SART).matches) {
       document.documentElement.classList.remove('sekans');
+      heroAc();   // perde yok -> bekleyen animasyonlar hemen oynasin
     }
   }
 

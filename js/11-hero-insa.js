@@ -112,7 +112,10 @@ window.HeroInsa = (function () {
   }
 
   function baslat() {
-    U.$$('[data-vitrin]').forEach(kur);
+    // Sinematik perde varsa vitrin, perde kalkinca yukselir (bkz. U.heroBekle)
+    U.$$('[data-vitrin]').forEach(function (kap) {
+      U.heroBekle(kap, function () { kur(kap); });
+    });
   }
 
   return { baslat: baslat };

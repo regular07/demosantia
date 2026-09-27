@@ -83,7 +83,10 @@ window.Belir = (function () {
       rootMargin: '0px 0px -8% 0px'   // biraz erken tetiklensin
     });
 
-    ogeler.forEach(function (o) { gozcu.observe(o); });
+    // Hero icindekiler sinematik perde kalkinca izlenmeye baslar (bkz. U.heroBekle)
+    ogeler.forEach(function (o) {
+      U.heroBekle(o, function () { gozcu.observe(o); });
+    });
   }
 
   return { baslat: baslat };

@@ -55,7 +55,10 @@ window.Sayac = (function () {
       });
     }, { threshold: 0.6 });
 
-    ogeler.forEach(function (o) { gozcu.observe(o); });
+    // Hero'daki rakamlar sinematik perde kalkinca sayar (bkz. U.heroBekle)
+    ogeler.forEach(function (o) {
+      U.heroBekle(o, function () { gozcu.observe(o); });
+    });
   }
 
   return { baslat: baslat };
