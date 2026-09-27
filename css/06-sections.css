@@ -132,8 +132,13 @@
   padding-block: calc(var(--bo-7) + var(--ust-yukseklik, 84px)) var(--bo-6);
   overflow: hidden;
 }
+/* ARKA PLAN GORSELINI DEGISTIRMEK ICIN: sadece asagidaki --hero-fon satiri.
+   (Yol bu CSS dosyasina gore: ../assets/img/...) Degisken tanimi ve
+   kullanimi ayni dosyada durur ki goreli yol hep ayni yere cozulsun. */
+.hero { --hero-fon: url("../assets/img/hero.jpg"); }
 .hero-fon {
   position: absolute; inset: 0;
+  background-image: var(--hero-fon);
   background-size: cover; background-position: center;
   opacity: .55;
 }
@@ -330,3 +335,38 @@
   gap: var(--bo-5);
   align-items: center;
 }
+
+
+/* =============================================================
+   HERO SINEMATIK GIRIS — 12-hero-sahne.js
+   Hero'nun USTUNE binen koyu bir katman + icinde <canvas>.
+   Scroll'la: laptop doner (kare dizisi) -> kamera ekrana girer
+   (canvas'a transform) -> katman solar, alttaki hero AYNEN gorunur.
+   Hero'nun kendi tasarimina dokunulmaz; sadece ustune perde.
+
+   Katman YALNIZCA <html class="sekans"> iken var. Sinifi index.html
+   <head> icindeki kucuk betik koyar (genis ekran + hareket azaltma
+   kapali). JS/GSAP yuklenemezse 12-hero-sahne.js sinifi geri alir.
+   Mobilde / hareket azaltmada bu blok hic devreye girmez.
+   ============================================================= */
+.hero-sahne { display: none; }
+
+.sekans .hero-sahne {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 2;                 /* .hero .kap (z 1) ustunde */
+  background: #020304;        /* karelerin zemin rengi — kareler gelmeden de siyah */
+  overflow: hidden;
+  pointer-events: none;       /* solarken bile alttaki dugmeler tiklanabilir */
+}
+.sekans .hero-sahne-tuval {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100vh;              /* kamera = gorunen ekran; hero daha uzunsa alti zemin */
+  display: block;
+  will-change: transform;
+}
+/* Pin'lenen hero en az bir ekran boyu olsun ki katman ekrani tam kaplasin */
+.sekans .hero { min-height: 100vh; }

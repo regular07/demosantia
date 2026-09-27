@@ -54,6 +54,16 @@
 
 <!-- Hata yakalayici EN ONCE yuklenir ki diger dosyalarin hatasini da gorsun -->
 <script src="js/00-hata.js"></script>
+
+<!-- Hero sinematik girisi (12-hero-sahne.js): sart saglaniyorsa <html>'e
+     "sekans" sinifi HEMEN (ilk boyamadan once) eklenir ki hero bir an
+     gorunup sonra kararmasin. Mobil (<=768px) ve hareket azaltma: sekans yok. -->
+<script>
+  if (window.matchMedia && matchMedia('(min-width: 769px) and (prefers-reduced-motion: no-preference)').matches) {
+    document.documentElement.classList.add('sekans');
+  }
+</script>
+<link rel="preload" as="image" href="assets/hero-seq/f_001.jpg">
 </head>
 <body>
 
@@ -62,7 +72,15 @@
 <main id="icerik">
 
 <section class="hero">
-  <div class="hero-fon" style="background-image:url(assets/img/hero.jpg)"></div>
+  <!-- Arka plan gorseli: css/06-sections.css -> .hero { --hero-fon: url(...) } -->
+  <div class="hero-fon"></div>
+
+  <!-- Sinematik giris katmani (12-hero-sahne.js). Kare dizisi <canvas>'a
+       cizilir; scroll'la laptop doner, kamera ekrana girer, katman
+       sonunda solup alttaki hero'yu gosterir. Dekoratif: ekran okuyucu atlar. -->
+  <div class="hero-sahne" data-hero-sahne aria-hidden="true">
+    <canvas class="hero-sahne-tuval"></canvas>
+  </div>
   <div class="kap">
    <div class="hero-izgara">
     <div class="hero-ic">
@@ -217,6 +235,10 @@
 <script src="js/09-etkiler.js"></script>
 <script src="js/10-karsilastir.js"></script>
 <script src="js/11-hero-insa.js"></script>
+<!-- GSAP + ScrollTrigger: sadece hero sinematik girisi (pin + scroll'a bagli ilerleme) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/12-hero-sahne.js"></script>
 <script src="js/99-main.js"></script>
 </body>
 </html>
