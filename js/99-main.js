@@ -12,7 +12,7 @@ U.hazir(function () {
 
   Parcalar.hepsiniYukle().then(function () {
     Nav.baslat();          // menu ancak header geldikten sonra kurulabilir
-    HeroSahne.baslat();    // hero sinematik girisi: pin olcusu header yerlesince dogru cikar
+    if (window.HeroSahne) HeroSahne.baslat();    // sadece index yukler; hero sinematik girisi: pin olcusu header yerlesince dogru cikar
   });
 
   TeklifFormu.baslat();    // form sayfada yoksa kendisi sessizce cikar
