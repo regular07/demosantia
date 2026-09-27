@@ -44,7 +44,7 @@ window.HeroSahne = (function () {
 
   /* ---- TEK AYAR NOKTASI ---- */
   var AYAR = {
-    kareSayisi: 48,
+    kareSayisi: 49,
     // ### -> 001, 002 ... (kare numarasi 1'den baslar)
     kareYolu: 'assets/hero-seq/f_###.jpg',
 
@@ -52,7 +52,7 @@ window.HeroSahne = (function () {
     // Olcum: assets/img/hero-cihaz-3d-ekran.jpg (1536x1024) uzerinde piksel tarama:
     //   sol 313px, ust 135px, en 872px, boy 593px  (ekran camiyla cerceve siniri)
     // Video gelince SON kare uzerinde yeniden kalibre et.
-    ekran: { sol: 20.38, ust: 13.18, genislik: 56.77, yukseklik: 57.91 },
+    ekran: { sol: 25.00, ust: 13.35, genislik: 48.75, yukseklik: 57.77 },  // 480p test videosu son kare (1280x734): sol 320, ust 98, en 624, boy 424 px
 
     // Pin suresi: kac ekran boyu scroll (2.5-3 arasi iyi hissettiriyor)
     kaydirmaBoyu: 2.75,
