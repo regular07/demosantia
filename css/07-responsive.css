@@ -80,3 +80,12 @@
   .karsilastir-etiket--once { right: 10px; }
   .karsilastir-etiket--sonra { left: 10px; }
 }
+
+/* Hero arka plani — dar ekran: gorselin renkli kosesi (sag alt turuncu) kadraja girsin,
+   karartma soldan-saga degil yukaridan-asagiya (yazi ustte, renk altta gorunsun). */
+@media (max-width: 768px) {
+  .hero-fon { background-position: 78% 85%; opacity: .85; }
+  .hero-fon::after {
+    background: linear-gradient(180deg, rgba(11,16,20,.88) 0%, rgba(11,16,20,.62) 55%, rgba(11,16,20,.25) 100%);
+  }
+}
