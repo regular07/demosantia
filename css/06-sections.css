@@ -135,7 +135,7 @@
 /* ARKA PLAN GORSELINI DEGISTIRMEK ICIN: sadece asagidaki --hero-fon satiri.
    (Yol bu CSS dosyasina gore: ../assets/img/...) Degisken tanimi ve
    kullanimi ayni dosyada durur ki goreli yol hep ayni yere cozulsun. */
-.hero { --hero-fon: url("../assets/img/hero.jpg"); }
+.hero { --hero-fon: url("../assets/img/hero-fon-ekran.jpg"); }
 .hero-fon {
   position: absolute; inset: 0;
   background-image: var(--hero-fon);
