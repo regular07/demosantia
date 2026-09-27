@@ -52,7 +52,7 @@ window.HeroSahne = (function () {
     // Olcum: assets/img/hero-cihaz-3d-ekran.jpg (1536x1024) uzerinde piksel tarama:
     //   sol 313px, ust 135px, en 872px, boy 593px  (ekran camiyla cerceve siniri)
     // Video gelince SON kare uzerinde yeniden kalibre et.
-    ekran: { sol: 25.00, ust: 13.35, genislik: 48.75, yukseklik: 57.77 },  // 480p test videosu son kare (1280x734): sol 320, ust 98, en 624, boy 424 px
+    ekran: { sol: 25.39, ust: 15.42, genislik: 47.34, yukseklik: 56.11 },  // 720p final video son kare (1280x720): sol 325, ust 111, en 606, boy 404 px
 
     // Pin suresi: kac ekran boyu scroll (2.5-3 arasi iyi hissettiriyor)
     kaydirmaBoyu: 2.75,
