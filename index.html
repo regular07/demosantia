@@ -65,6 +65,8 @@
   }
 </script>
 <link rel="preload" as="image" type="image/webp" href="assets/hero-seq/f_001.webp" media="(min-width: 769px) and (prefers-reduced-motion: no-preference)">
+<!-- Sekans yoksa (mobil / hareket azaltma) LCP = hero arka plani (CSS'te, gec kesfediliyor) -> onden iste -->
+<link rel="preload" as="image" href="assets/img/hero-fon-ekran.jpg" fetchpriority="high" media="(max-width: 768px), (prefers-reduced-motion: reduce)">
 </head>
 <body>
 
