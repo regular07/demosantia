@@ -12,7 +12,7 @@
 (function () {
   'use strict';
 
-  var GA_ID = '';   // ornek: 'G-XXXXXXXXXX' — bos oldugu surece hicbir sey yuklenmez
+  var GA_ID = 'G-9MGWK9JF8E';   // ornek: 'G-XXXXXXXXXX' — bos oldugu surece hicbir sey yuklenmez
 
   if (!GA_ID) return;
 

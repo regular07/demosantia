@@ -41,8 +41,8 @@
     serit.setAttribute('aria-label', 'Çerez tercihi');
 
     serit.innerHTML =
-      '<p>Bu site şu an çerez kullanmıyor; ileride kullanım istatistikleri için ' +
-      'eklenebilir. Tercihiniz bu cihazda saklanır.' +
+      '<p>Siteyi nasıl kullandığınızı anonim olarak ölçmek için Google Analytics ' +
+      'çerezleri kullanıyoruz; yalnızca onay verirseniz çalışır. Tercihiniz bu cihazda saklanır.' +
       (link ? ' <a href="' + link + '">KVKK Aydınlatma Metni</a>' : '') + '</p>' +
       '<div class="cerez-butonlar">' +
         '<button type="button" class="cerez-red" data-cerez="red">Reddet</button>' +
