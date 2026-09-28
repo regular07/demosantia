@@ -9,6 +9,10 @@
    ============================================================= */
 
 :root {
+  /* Header (partials/header.html, JS ile gelir) yuksekligi TAHMINI.
+     03-nav.js gercek olcuyu yazinca bu ezilir. Tahmin gercege esit
+     olsun ki header gelince sayfa kaymasin (CLS). Mobil: 07-responsive. */
+  --ust-yukseklik: 91px;
   /* -----------------------------------------------------------
      MARKA — elektrik camgobegi + sicak karsit
      Web tasarim studyosunun kendi sitesi: palet de portfolyonun

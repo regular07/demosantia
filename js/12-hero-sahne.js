@@ -57,7 +57,7 @@ window.HeroSahne = (function () {
     ekran: { sol: 25.39, ust: 15.42, genislik: 47.34, yukseklik: 56.11 },  // 720p final video son kare (1280x720): sol 325, ust 111, en 606, boy 404 px
 
     // Pin suresi: kac ekran boyu scroll (2.5-3 arasi iyi hissettiriyor)
-    kaydirmaBoyu: 2.75,
+    kaydirmaBoyu: 2.75,   // DEGISIRSE: 06-sections.css "CLS onlemi" 275vh de degismeli
 
     // Evreler, toplam ilerlemenin (0..1) dilimleri. Ust uste binebilir.
     evre: {
@@ -231,6 +231,10 @@ window.HeroSahne = (function () {
       document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
     }
 
+    // CSS'in onden ayirdigi bosluk (bkz. 06-sections.css "CLS onlemi")
+    // birakilir; ayni gorevde pin-spacer kurulur, arada boyama olmaz.
+    document.documentElement.classList.add('sekans-pin');
+
     // Pin + scrub: hero ekrana sabitlenir, scroll ilerlemesi durum.p'ye akar
     var tween = gsap.to(durum, {
       p: 1,
@@ -255,7 +259,7 @@ window.HeroSahne = (function () {
       tween.kill();
       sahne.removeAttribute('style');
       tuval.removeAttribute('style');
-      document.documentElement.classList.remove('sekans');
+      document.documentElement.classList.remove('sekans', 'sekans-pin');
       heroAc();   // perde yok -> bekleyen animasyonlar hemen oynasin
     };
   }

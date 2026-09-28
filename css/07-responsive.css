@@ -19,6 +19,7 @@
 /* ---------- MOBIL ---------- */
 @media (max-width: 720px) {
   :root {
+    --ust-yukseklik: 82px;   /* mobil header tahmini (CLS) */
     --bs-3xl: 1.9rem;
     --bs-2xl: 1.45rem;
     --bo-7: 48px;

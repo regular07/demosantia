@@ -370,3 +370,10 @@
 }
 /* Pin'lenen hero en az bir ekran boyu olsun ki katman ekrani tam kaplasin */
 .sekans .hero { min-height: 100vh; }
+/* CLS onlemi: ScrollTrigger pin'i kurunca hero'nun altina kaydirma boyu
+   kadar bosluk (pin-spacer) ekler; bu, alttaki bolumu bir anda asagi iter
+   (Lighthouse CLS 1.0). JS gelene kadar ayni boslugu margin ile ayir;
+   12-hero-sahne.js pin'i kurmadan hemen once "sekans-pin" sinifini ekler
+   ve bu bosluk devri pin-spacer'a gecer (arada boyama yok -> kayma yok).
+   275vh = AYAR.kaydirmaBoyu (2.75) x ekran boyu — ikisi birlikte degisir. */
+.sekans:not(.sekans-pin) .hero { margin-bottom: 275vh; }
