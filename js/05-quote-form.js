@@ -41,7 +41,8 @@ window.TeklifFormu = (function () {
 
   function temizle() {
     Object.keys(ZORUNLU).forEach(function (ad) { hataYaz(ad, ''); });
-    hataYaz('phone', '');   // zorunlu degil ama bicim hatasi verebiliyor
+    hataYaz('phone', '');      // zorunlu degil ama bicim hatasi verebiliyor
+    hataYaz('kvkk_onay', '');  // checkbox — FormData'da yok, ayri temizlenir
   }
 
   /** Formu okur, dogrular. Gecerliyse veri nesnesi, degilse null doner. */
@@ -71,6 +72,14 @@ window.TeklifFormu = (function () {
 
     if (veri.message && veri.message.length < 10) {
       hataYaz('message', 'Biraz daha detay yazin (en az 10 karakter).');
+      gecerli = false;
+    }
+
+    // KVKK onayi zorunlu: checkbox isaretsiz FormData'da hic gorunmez,
+    // o yuzden DOM'dan dogrudan okunur.
+    var onayKutusu = U.$('[name="kvkk_onay"]', form);
+    if (!onayKutusu || !onayKutusu.checked) {
+      hataYaz('kvkk_onay', 'Devam etmek icin Aydinlatma Metni onayini isaretleyin.');
       gecerli = false;
     }
 

@@ -114,6 +114,73 @@
 .form-sonuc--hata   { background: var(--hata-zemin);   color: var(--hata); }
 .form-sonuc:empty { display: none; }
 
+/* KVKK onay kutusu — teklif formundaki zorunlu izin */
+.alan-onay {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--bs-s);
+  color: var(--murekkep-2);
+  line-height: 1.5;
+}
+.alan-onay input[type="checkbox"] {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--marka);
+}
+.alan-onay a { color: var(--marka); font-weight: 600; }
+.alan-onay a:hover { text-decoration: underline; }
+.alan.hatali .alan-onay { color: var(--hata); }
+.alan.hatali .alan-onay a { color: var(--hata); }
+
+/* ---------- CEREZ BANNER ----------
+   Tum sayfalarin altina js/13-cerez.js ile eklenir. Sabit, kucuk,
+   siteye yakisan bir serit; Kabul/Reddet tercihi localStorage'da. */
+.cerez-serit {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9000;
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--gece);
+  color: var(--gece-metin);
+  border: 1px solid var(--gece-cizgi);
+  border-radius: var(--kose);
+  box-shadow: var(--derinlik-3);
+  padding: 18px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--bs-s);
+}
+.cerez-serit p { margin: 0; flex: 1 1 260px; color: var(--gece-metin-2); }
+.cerez-serit a { color: var(--marka-vurgu); font-weight: 600; }
+.cerez-serit a:hover { text-decoration: underline; }
+.cerez-butonlar { display: flex; gap: 8px; flex: none; }
+.cerez-butonlar button {
+  font: inherit;
+  font-weight: 600;
+  font-size: var(--bs-xs);
+  padding: 9px 16px;
+  border-radius: var(--kose-kucuk);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background var(--gecis), color var(--gecis), border-color var(--gecis);
+}
+.cerez-kabul { background: var(--marka); color: #fff; }
+.cerez-kabul:hover { background: var(--marka-koyu); }
+.cerez-red { background: transparent; color: var(--gece-metin-2); border-color: var(--gece-cizgi); }
+.cerez-red:hover { border-color: var(--gece-metin-2); color: var(--gece-metin); }
+@media (max-width: 480px) {
+  .cerez-serit { flex-direction: column; align-items: stretch; text-align: left; }
+  .cerez-butonlar { justify-content: flex-end; }
+}
+
 /* ---------- UST MENU ----------
    Tam genislik CERCEVE degil: sag-soldan bosluklu, kose yuvarlak
    "yuzen" bir serit. Disaridaki .ust sadece bosluk + sticky konum
