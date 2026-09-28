@@ -28,7 +28,9 @@
         ffmpeg -i hero.mp4 -vf "fps=12,scale=1280:-2" -q:v 5 assets/hero-seq/f_%03d.jpg
       (~4-5 sn x 12 fps = ~48-60 kare. Numara 001'den baslar.)
    2) Asagidaki AYAR.kareSayisi'ni cikan dosya sayisina esitle:
-        ls assets/hero-seq | wc -l
+        ls assets/hero-seq/*.jpg | wc -l
+      Sonra WebP'ye cevir (site .webp okur, ~3 kat hafif), ornek:
+        for f in assets/hero-seq/f_*.jpg; do cwebp -q 80 "$f" -o "${f%.jpg}.webp"; done
    3) SON karede ekran dikdortgenini yeniden olc -> AYAR.ekran.
       (Olcum: gorseli ac, ekranin sol/ust kenari ve eni/boyu piksel
        olarak bul, gorsel eni/boyuna bol, 100 ile carp.)
@@ -46,7 +48,7 @@ window.HeroSahne = (function () {
   var AYAR = {
     kareSayisi: 49,
     // ### -> 001, 002 ... (kare numarasi 1'den baslar)
-    kareYolu: 'assets/hero-seq/f_###.jpg',
+    kareYolu: 'assets/hero-seq/f_###.webp',   // JPG'ler yedek olarak klasorde duruyor
 
     // Ekran dikdortgeni, KARENIN yuzdesi olarak (son kare = ekrani donuk laptop).
     // Olcum: assets/img/hero-cihaz-3d-ekran.jpg (1536x1024) uzerinde piksel tarama:
