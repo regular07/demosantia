@@ -105,24 +105,58 @@ window.HeroSahne = (function () {
     var cizilen = -1;                      // son cizilen kare (gereksiz cizimi onler)
     var durum  = { p: 0 };                 // GSAP'in scrub ettigi ilerleme
     var olcu   = null;                     // tuval boyu + ekranin tuvaldeki yeri
+    var bitti  = false;                    // temizle() sonrasi gec gelen kareler cizmesin
 
-    /* Kareleri onden yukle. Ilki once istenir ki hemen cizilsin. */
-    for (var i = 0; i < AYAR.kareSayisi; i++) {
-      (function (i) {
-        var img = new Image();
-        img.decoding = 'async';
-        img.onload = function () {
-          img.hazir = true;
-          // Su an gosterilmesi gereken kare (ya da ona en yakin onceki) geldiyse ciz
-          if (i <= kareNo()) { cizilen = -1; ciz(); }
-        };
-        img.src = kareAdresi(i);
-        kareler[i] = img;
-      })(i);
+    /* Kareleri KADEMELI yukle (sayfa acilisini 49 istekle bogmamak icin):
+       - ilk ONDEN_KARE kare hemen istenir (ilk kare <head>'de preload'lu),
+       - kalanlar sayfa 'load' olduktan sonra, tarayici bosta kaldikca
+         arka planda sirayla (ayni anda en fazla ARKA_PARALEL istek).
+       Henuz gelmemis kareye kaydirilirsa ciz() en yakin yuklu kareyi
+       gosterir; tuval hic bos kalmaz. */
+    var ONDEN_KARE = 7, ARKA_PARALEL = 3;
+    function kareYukle(i) {
+      if (kareler[i]) return;
+      var img = new Image();
+      img.decoding = 'async';
+      img.onload = function () {
+        img.hazir = true;
+        ciz();                 // daha yakin bir kare geldiyse ciz() onu secer
+        sirayaDevam();
+      };
+      img.onerror = sirayaDevam;
+      img.src = kareAdresi(i);
+      kareler[i] = img;
     }
+    for (var i = 0; i < Math.min(ONDEN_KARE, AYAR.kareSayisi); i++) kareYukle(i);
+
+    var siradaki = ONDEN_KARE, arkaBasladi = false;
+    function sirayaDevam() {
+      if (!arkaBasladi || bitti) return;
+      while (siradaki < AYAR.kareSayisi && kareler[siradaki]) siradaki++;
+      if (siradaki >= AYAR.kareSayisi) return;
+      var no = siradaki++;
+      var bosta = window.requestIdleCallback || function (fn) { return setTimeout(fn, 1); };
+      bosta(function () { kareYukle(no); }, { timeout: 500 });
+    }
+    function arkaPlanaBasla() {
+      if (arkaBasladi) return;
+      arkaBasladi = true;
+      for (var j = 0; j < ARKA_PARALEL; j++) sirayaDevam();
+    }
+    if (document.readyState === 'complete') arkaPlanaBasla();
+    else window.addEventListener('load', arkaPlanaBasla);
 
     function kareNo() {
       return Math.round(dilim(durum.p, AYAR.evre.donus) * (AYAR.kareSayisi - 1));
+    }
+
+    function hazirMi(i) { return i >= 0 && i < AYAR.kareSayisi && kareler[i] && kareler[i].hazir; }
+    function enYakinHazir(n) {
+      for (var d = 0; d < AYAR.kareSayisi; d++) {
+        if (hazirMi(n - d)) return n - d;
+        if (hazirMi(n + d)) return n + d;
+      }
+      return 0;
     }
 
     /* Tuvali ekrana (CSS boyu x DPR) esitle, ekranin tuvaldeki yerini hesapla. */
@@ -154,13 +188,13 @@ window.HeroSahne = (function () {
 
     /* Mevcut ilerlemeye gore kareyi ciz + kamerayi ayarla + katmani sondur. */
     function ciz() {
-      if (!olcu) return;
+      if (!olcu || bitti) return;
       var p = durum.p;
 
-      // 1) Donus: dogru kareyi bul; yuklenmediyse en yakin yuklenmis ONCEKI kare
+      // 1) Donus: dogru kareyi bul; yuklenmediyse en yakin yuklenmis kare
+      //    (esit uzaklikta onceki kare tercih edilir)
       var n = kareNo();
-      var k = n;
-      while (k > 0 && !(kareler[k] && kareler[k].hazir)) k--;
+      var k = enYakinHazir(n);
       if (k !== cizilen && kareler[k] && kareler[k].hazir) {
         var img = kareler[k];
         ctx.setTransform(olcu.dpr, 0, 0, olcu.dpr, 0, 0);
@@ -212,7 +246,9 @@ window.HeroSahne = (function () {
 
     // gsap.matchMedia kosulu bozulunca (pencere daraldi vb.) her seyi geri al
     return function temizle() {
+      bitti = true;
       window.removeEventListener('resize', boyutla);
+      window.removeEventListener('load', arkaPlanaBasla);
       if (tween.scrollTrigger) tween.scrollTrigger.kill(true);
       tween.kill();
       sahne.removeAttribute('style');
